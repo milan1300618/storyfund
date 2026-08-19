@@ -1,0 +1,17 @@
+{
+    "MAX_STORIES_PER_CYCLE": 3,
+    "MAX_GENERATIONS": 3,
+    "WORDS_TO_SHOW": 9,
+    "WORDS_TO_SELECT": 4,
+    "MIN_AI_SCORE": 20,
+    "MAX_AI_SCORE": 100,
+    "SHOW_AI_SCORE": true,
+    "TEST_MODE": true,
+    "APP_BUILD": "2026.07.16",
+    "APP_NAME": "StoryFund",
+    "APP_VERSION": "0.6",
+    "ENABLE_COMMENTS": false,
+    "SHOW_SELECTED_WORDS": true,
+    "TRANSPARENT_ACCOUNT": "https://www.unicreditbank.sk/sk/ostatne/transparentny-ucet.html?IBAN=SK5611110000001491048088",
+    "WINNERS_PER_CYCLE": 5
+}
