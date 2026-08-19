@@ -42,7 +42,7 @@ version = 0.1
 
 # (list) Application requirements
 # comma separated e.g. requirements = sqlite3,kivy
-requirements = python3,kivy
+requirements = python3,kivy==2.3.1,kivymd==1.2.0
 
 # (str) Custom source folders for requirements
 # Sets custom source for any requirements with recipes
@@ -59,6 +59,7 @@ requirements = python3,kivy
 orientation = portrait
 android.api = 35
 android.minapi = 24
+android.accept_sdk_license = True
 
 # (list) List of services to declare
 # This is currently only relevant to Android services.
