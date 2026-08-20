@@ -1,7 +1,10 @@
-name: Build StoryFund APK
+name: Build StoryFund AP
 
-on:
+    on:
   workflow_dispatch:
+  push:
+    branches:
+      - main
 
 jobs:
   build:
