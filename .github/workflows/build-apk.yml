@@ -1,6 +1,6 @@
 name: Build StoryFund AP
 
-    on:
+on:
   workflow_dispatch:
   push:
     branches:
