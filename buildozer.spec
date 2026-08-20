@@ -60,7 +60,7 @@ orientation = portrait
 android.api = 35
 android.minapi = 24
 android.accept_sdk_license = True
-p4a.branch = master
+p4a.branch = develop
 
 # (list) List of services to declare
 # This is currently only relevant to Android services.
