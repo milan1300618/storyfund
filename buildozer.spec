@@ -57,7 +57,8 @@ requirements = python3==3.14.2,hostpython==3.14.2,kivy==2.3.1,kivymd==1.2.0
 # (list) Supported orientations
 # Valid options are: landscape, portrait, portrait-reverse, landscape-reverse, or all
 orientation = portrait
-android.api = 35
+android.api = 36
+android.ndk = 29
 android.minapi = 24
 android.accept_sdk_license = True
 p4a.branch = develop
