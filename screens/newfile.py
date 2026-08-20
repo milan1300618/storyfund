@@ -197,9 +197,7 @@ class HomeScreen(MDScreen):
         # =====================================
 
         summary = MDRaisedButton(
-            text="💰 MINULOTÝŽDŇOVÁ ZBIERKA
-Vyzbierané: 245,60 €
-👥 Odmenených autorov: 12   📅 13.07.2026",
+            text="💰 MINULOTÝŽDŇOVÁ ZBIERKA\nVyzbierané: 245,60 €\n👥 Odmenených autorov: 12   📅 13.07.2026",
             size_hint=(1, None),
             height=dp(88)
         )
