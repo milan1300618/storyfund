@@ -19,6 +19,7 @@ source.dir = .
 
 # (list) Source files to include (leave empty to include all the files)
 source.include_exts = py,png,jpg,kv,atlas
+source.include_patterns = kv/*.kv
 
 # (list) List of inclusions using pattern matching
 #source.include_patterns = assets/*,images/*.png
@@ -42,7 +43,7 @@ version = 0.1
 
 # (list) Application requirements
 # comma separated e.g. requirements = sqlite3,kivy
-requirements = python3==3.14.2,kivy==2.3.1,kivymd==1.2.0
+requirements = python3,kivy
 
 # (str) Custom source folders for requirements
 # Sets custom source for any requirements with recipes
@@ -57,11 +58,8 @@ requirements = python3==3.14.2,kivy==2.3.1,kivymd==1.2.0
 # (list) Supported orientations
 # Valid options are: landscape, portrait, portrait-reverse, landscape-reverse, or all
 orientation = portrait
-android.api = 36
-android.ndk = 29
+android.api = 35
 android.minapi = 24
-android.accept_sdk_license = True
-p4a.branch = develop
 
 # (list) List of services to declare
 # This is currently only relevant to Android services.
