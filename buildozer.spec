@@ -8,12 +8,13 @@ source.dir = .
 source.include_exts = py,kv,png,jpg,jpeg,json,txt
 
 version = 0.1
+
 requirements = python3,kivy
 
 orientation = portrait
 fullscreen = 0
 
-# Build only the 64-bit Android architecture to keep the APK smaller.
+android.minapi = 24
 android.archs = arm64-v8a
 
 android.accept_sdk_license = True
