@@ -1,0 +1,40 @@
+<NewUserScreen>:
+    name: "new_user"
+
+    MDBoxLayout:
+        orientation: "vertical"
+        padding: "20dp"
+        spacing: "12dp"
+
+        MDLabel:
+            text: "Nový používateľ"
+            halign: "center"
+            font_style: "H5"
+
+        MDLabel:
+            text: "NIK"
+
+        MDLabel:
+            id: nik_label
+            text: ""
+
+        MDLabel:
+            text: "PIN"
+
+        MDLabel:
+            id: pin_label
+            text: ""
+
+        Widget:
+
+        MDRaisedButton:
+            text: "Generovať znova"
+            on_release: root.generate_new()
+
+        MDRaisedButton:
+            text: "Vytvoriť používateľa"
+            on_release: root.save_user()
+
+        MDRaisedButton:
+            text: "Zrušiť"
+            on_release: root.cancel()

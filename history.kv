@@ -1,0 +1,25 @@
+<HistoryScreen>:
+    name: "history"
+
+    MDBoxLayout:
+        orientation: "vertical"
+        padding: "16dp"
+        spacing: "10dp"
+
+        MDLabel:
+            text: "História kôl"
+            halign: "center"
+            font_style: "H5"
+
+        MDLabel:
+            text: "Uzavreté kolá"
+            halign: "left"
+
+        ScrollView:
+
+            MDList:
+                id: history_list
+
+        MDRaisedButton:
+            text: "Späť do Admin panela"
+            on_release: root.back()
