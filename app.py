@@ -6,16 +6,16 @@
 from kivymd.app import MDApp
 from kivy.uix.screenmanager import ScreenManager
 
-from screens.history import HistoryScreen
-from screens.settings import SettingsScreen
-from screens.login import LoginScreen
-from screens.home import HomeScreen
-from screens.create_story import CreateStoryScreen
-from screens.profile import ProfileScreen
-from screens.admin import AdminScreen
-from screens.users import UsersScreen
-from screens.user_detail import UserDetailScreen
-from screens.new_user import NewUserScreen
+from history import HistoryScreen
+from settings import SettingsScreen
+from login import LoginScreen
+from home import HomeScreen
+from create_story import CreateStoryScreen
+from profile import ProfileScreen
+from admin import AdminScreen
+from users import UsersScreen
+from user_detail import UserDetailScreen
+from new_user import NewUserScreen
 
 
 class StoryFundApp(MDApp):

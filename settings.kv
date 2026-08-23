@@ -1,0 +1,103 @@
+<SettingsScreen>:
+    name: "settings"
+
+    MDBoxLayout:
+        orientation: "vertical"
+        padding: "16dp"
+        spacing: "12dp"
+
+        MDLabel:
+            text: "Nastavenia"
+            halign: "center"
+            font_style: "H5"
+            size_hint_y: None
+            height: self.texture_size[1] + dp(20)
+
+        ScrollView:
+
+            MDGridLayout:
+                cols: 2
+                adaptive_height: True
+                spacing: "10dp"
+                row_default_height: "48dp"
+                row_force_default: True
+
+                MDLabel:
+                    text: "Testovací režim"
+
+                MDSwitch:
+                    id: test_mode
+
+                MDLabel:
+                    text: "Max. príbehov za kolo"
+
+                MDTextField:
+                    id: max_stories
+                    input_filter: "int"
+                    mode: "rectangle"
+
+                MDLabel:
+                    text: "Počet podporených autorov"
+
+                MDTextField:
+                    id: winners_per_cycle
+                    input_filter: "int"
+                    mode: "rectangle"
+
+                MDLabel:
+                    text: "Max. generácií"
+
+                MDTextField:
+                    id: max_generations
+                    input_filter: "int"
+                    mode: "rectangle"
+
+                MDLabel:
+                    text: "Počet zobrazených slov"
+
+                MDTextField:
+                    id: words_to_show
+                    input_filter: "int"
+                    mode: "rectangle"
+
+                MDLabel:
+                    text: "Počet vyberaných slov"
+
+                MDTextField:
+                    id: words_to_select
+                    input_filter: "int"
+                    mode: "rectangle"
+
+                MDLabel:
+                    text: "Min. AI skóre"
+
+                MDTextField:
+                    id: min_ai_score
+                    input_filter: "int"
+                    mode: "rectangle"
+
+                MDLabel:
+                    text: "Max. AI skóre"
+
+                MDTextField:
+                    id: max_ai_score
+                    input_filter: "int"
+                    mode: "rectangle"
+
+                MDLabel:
+                    text: "Zobraziť AI skóre"
+
+                MDSwitch:
+                    id: show_ai_score
+
+        MDBoxLayout:
+            adaptive_height: True
+            spacing: "10dp"
+
+            MDRaisedButton:
+                text: "ULOŽIŤ"
+                on_release: root.save_settings()
+
+            MDRaisedButton:
+                text: "SPÄŤ"
+                on_release: root.back()

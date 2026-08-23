@@ -1,411 +1,102 @@
-# ======================================
-# StoryFund v0.2
-# File: admin.py
-# Admin panel
-# ======================================
-
-
-from database import get_admin
-from cycle import force_new_cycle
-
-from backend import (
-    create_user,
-    list_users,
-    block_user,
-    unblock_user
-)
-
-from cycle import (
-    set_fund,
-    preview_distribution,
-    distribute,
-    close_cycle
-)
-
-
-
-# ======================================
-# ADMIN LOGIN
-# ======================================
-
-def admin_login():
-
-    admin = get_admin()
-
-
-    print("\n================")
-    print(" ADMIN LOGIN ")
-    print("================")
-
-
-    nik = input("NIK: ")
-    pin = input("PIN: ")
-
-
-    if (
-        nik == admin["nik"]
-        and
-        pin == admin["pin"]
-    ):
-
-        print("\n✔ Admin prihlásený")
-
-        return True
-
-
-    print("\n❌ Nesprávne údaje")
-
-    return False
-
-
-
-
-# ======================================
-# HLAVNÉ MENU
-# ======================================
-
-def admin_menu():
-
-
-    while True:
-
-
-        print("\n============================")
-        print("        ADMIN PANEL")
-        print("============================")
-
-
-        print("""
-1. Vytvoriť používateľa
-2. Zobraziť používateľov
-3. Blokovať používateľa
-4. Odblokovať používateľa
-
-5. Nastaviť fond
-6. Náhľad rozdelenia
-7. Rozdeliť pomoc
-8. Uzavrieť kolo
-
-0. Koniec
-""")
-
-
-        choice = input("Vyber: ")
-
-
-
-        if choice == "1":
-
-            create_user_menu()
-
-
-
-        elif choice == "2":
-
-            show_users()
-
-
-
-        elif choice == "3":
-
-            block_menu()
-
-
-
-        elif choice == "4":
-
-            unblock_menu()
-
-
-
-        elif choice == "5":
-
-            set_fund_menu()
-
-
-
-        elif choice == "6":
-
-            preview_menu()
-
-
-
-        elif choice == "7":
-
-            distribute_menu()
-
-
-
-        elif choice == "8":
-
-            close_menu()
-
-
-
-        elif choice == "0":
-
-            break
-
-
-
-
-
-# ======================================
-# VYTVORIŤ ÚČET
-# ======================================
-
-def create_user_menu():
-
-
-    user = create_user()
-
-
-    print("\n================")
-    print(" NOVÝ ÚČET ")
-    print("================")
-
-
-    print(
-        "NIK:",
-        user["nik"]
-    )
-
-
-    print(
-        "PIN:",
-        user["pin"]
-    )
-
-
-
-# ======================================
-# ZOZNAM POUŽÍVATEĽOV
-# ======================================
-
-def show_users():
-
-
-    users = list_users()
-
-
-    print("\n================")
-    print(" POUŽÍVATELIA ")
-    print("================")
-
-
-    for u in users:
-
-
-        status = (
-            "AKTÍVNY"
-            if u.get("active", True)
-            else
-            "BLOKOVANÝ"
+import os
+from kivy.lang import Builder
+from kivymd.uix.screen import MDScreen
+from kivymd.uix.dialog import MDDialog
+from kivymd.uix.button import MDFlatButton
+from kivymd.uix.textfield import MDTextField
+from kivy.uix.boxlayout import BoxLayout
+
+from backend import list_users, create_user
+from cycle import force_new_cycle, record_previous_cycle
+
+Builder.load_file(os.path.join(os.path.dirname(__file__), "admin.kv"))
+
+
+class AdminScreen(MDScreen):
+
+    def logout(self):
+        self.manager.current = "login"
+
+    def show_users(self):
+        self.manager.current = "users"
+
+    def create_user(self):
+        self.manager.current = "new_user"
+
+    def settings(self):
+        self.manager.current = "settings"
+
+    def close_cycle(self):
+        try:
+            force_new_cycle()
+            message = "Kolo bolo úspešne uzavreté a otvorilo sa nové kolo."
+        except Exception as e:
+            message = str(e)
+
+        MDDialog(title="Uzavrieť kolo", text=message).open()
+
+    def previous_cycle(self):
+        amount_field = MDTextField(
+            hint_text="Vyzbieraná suma (€)",
+            input_filter="float",
+            mode="rectangle"
+        )
+        recipients_field = MDTextField(
+            hint_text="Počet príjemcov",
+            input_filter="int",
+            mode="rectangle"
         )
 
-
-        print(
-            u["nik"],
-            "-",
-            status
+        content = BoxLayout(
+            orientation="vertical",
+            spacing="12dp",
+            padding="10dp",
+            size_hint_y=None,
+            height="130dp"
         )
+        content.add_widget(amount_field)
+        content.add_widget(recipients_field)
 
+        dialog = MDDialog(
+            title="Minulé kolo",
+            type="custom",
+            content_cls=content,
+            buttons=[
+                MDFlatButton(
+                    text="ZRUŠIŤ",
+                    on_release=lambda x: dialog.dismiss()
+                ),
+                MDFlatButton(
+                    text="ULOŽIŤ",
+                    on_release=lambda x: self._save_previous_cycle(
+                        amount_field.text, recipients_field.text, dialog
+                    )
+                ),
+            ],
+        )
+        dialog.open()
 
+    def _save_previous_cycle(self, amount_text, recipients_text, dialog):
+        try:
+            if not amount_text.strip() or not recipients_text.strip():
+                raise ValueError("Vyplň sumu aj počet príjemcov.")
 
-
-
-# ======================================
-# BLOKOVANIE
-# ======================================
-
-def block_menu():
-
-
-    nik = input(
-        "NIK na blokovanie: "
-    )
-
-
-    if block_user(nik):
-
-        print("✔ Používateľ zablokovaný")
-
-    else:
-
-        print("❌ NIK nenájdený")
-
-
-
-
-
-# ======================================
-# ODBLOKOVANIE
-# ======================================
-
-def unblock_menu():
-
-
-    nik = input(
-        "NIK na odblokovanie: "
-    )
-
-
-    if unblock_user(nik):
-
-        print("✔ Používateľ odblokovaný")
-
-    else:
-
-        print("❌ NIK nenájdený")
-
-
-
-
-
-# ======================================
-# FOND
-# ======================================
-
-def set_fund_menu():
-
-
-    try:
-
-        amount = float(
-            input(
-                "Suma fondu: "
+            per_person = record_previous_cycle(
+                amount_text.replace(",", "."), recipients_text
             )
-        )
+            dialog.dismiss()
 
+            MDDialog(
+                title="Minulé kolo uložené",
+                text=(
+                    f"Vyzbierané: {float(amount_text.replace(',', '.')):.2f} €\n"
+                    f"Príjemcov: {int(recipients_text)}\n"
+                    f"Na jedného: {per_person:.2f} €"
+                )
+            ).open()
 
-        set_fund(amount)
+        except Exception as e:
+            MDDialog(title="Chyba", text=str(e)).open()
 
-
-        print(
-            "✔ Fond nastavený"
-        )
-
-
-    except:
-
-        print(
-            "❌ Chyba"
-        )
-
-
-
-
-
-# ======================================
-# NÁHĽAD
-# ======================================
-
-def preview_menu():
-
-
-    try:
-
-        count = int(
-            input(
-                "Počet príjemcov: "
-            )
-        )
-
-
-        amount = preview_distribution(
-            count
-        )
-
-
-        print(
-            "Každý dostane:",
-            amount,
-            "€"
-        )
-
-
-    except:
-
-        print(
-            "❌ Chyba"
-        )
-
-
-
-
-
-# ======================================
-# ROZDELENIE
-# ======================================
-
-def distribute_menu():
-
-
-    try:
-
-        count = int(
-            input(
-                "Počet príjemcov: "
-            )
-        )
-
-
-        result = distribute(
-            count
-        )
-
-
-        print(
-            "\n✔ Rozdelené"
-        )
-
-
-        for r in result:
-
-            print(
-                r["nik"],
-                "->",
-                r["amount"],
-                "€"
-            )
-
-
-    except:
-
-        print(
-            "❌ Chyba"
-        )
-
-
-
-
-
-# ======================================
-# UZAVRETIE KOLA
-# ======================================
-
-def close_menu():
-
-
-    close_cycle()
-
-
-    print(
-        "✔ Kolo uzavreté"
-    )
-
-def close_cycle(self):
-    force_new_cycle()
-
-
-
-# ======================================
-# ŠTART
-# ======================================
-
-if __name__ == "__main__":
-
-
-    if admin_login():
-
-        admin_menu()
+    def history(self):
+        self.manager.current = "history"

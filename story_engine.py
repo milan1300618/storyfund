@@ -4,6 +4,7 @@
 # ======================================
 
 import random
+import os
 
 
 def load_lines(path):
@@ -11,9 +12,9 @@ def load_lines(path):
         return [x.strip() for x in f if x.strip()]
 
 
-INTROS = load_lines("story_data/intro.txt")
-MIDDLES = load_lines("story_data/middle.txt")
-ENDINGS = load_lines("story_data/ending.txt")
+INTROS = load_lines(os.path.join(os.path.dirname(__file__), "intro.txt"))
+MIDDLES = load_lines(os.path.join(os.path.dirname(__file__), "middle.txt"))
+ENDINGS = load_lines(os.path.join(os.path.dirname(__file__), "ending.txt"))
 
 
 def generate_story(words):
