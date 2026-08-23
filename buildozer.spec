@@ -1,4 +1,4 @@
-# StoryFund - Buildozer configuration
+# StoryFund - stable python-for-android configuration
 
 [app]
 
@@ -19,22 +19,20 @@ fullscreen = 0
 android.api = 35
 android.minapi = 24
 android.ndk = 27c
-android.archs = arm64-v8a, armeabi-v7a
+android.archs = arm64-v8a,armeabi-v7a
 
 android.accept_sdk_license = True
 android.skip_update = False
 android.allow_backup = True
 
 #
-# python-for-android:
-# 869c74b contains the upstream fix for the
-# "Backend 'setuptools.build_meta' is not available" error
-# caused by the host-python PYTHONPATH handling.
-# It predates the later p4a Python 3.14 changes.
+# IMPORTANT:
+# This p4a commit is immediately before the Python 3.14 update.
+# It uses Python 3.11.13 for the Android Python recipe.
 #
 
 p4a.branch = develop
-p4a.commit = 869c74b
+p4a.commit = 7593f9d
 
 [buildozer]
 
