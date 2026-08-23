@@ -8,7 +8,6 @@ source.dir = .
 source.include_exts = py,kv,png,jpg,jpeg,json,txt
 
 version = 0.1
-
 requirements = python3,kivy
 
 orientation = portrait
@@ -23,4 +22,4 @@ android.allow_backup = True
 [buildozer]
 
 log_level = 2
-warn_on_root = 1
+warn_on_root = 0
