@@ -16,13 +16,19 @@ requirements = python3,kivy
 orientation = portrait
 fullscreen = 0
 
-android.api = 35
+android.api = 36
 android.minapi = 24
+android.ndk = 29
 android.archs = arm64-v8a, armeabi-v7a
 android.allow_backup = True
 
-# Keep the remaining platform defaults from Buildozer.
 osx.kivy_version = 2.2.0
+
+#
+# Python for Android (p4a) specific
+#
+
+p4a.branch = develop
 
 [buildozer]
 
