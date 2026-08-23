@@ -34,9 +34,9 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           python -m pip install "buildozer==1.6.0"
-          python -m pip install "setuptools<81" "cython==0.29.34"
+          python -m pip install "legacy-cgi" "setuptools<81" "cython==0.29.34"
 
-      - name: Clean previous Buildozer data
+      - name: Clean all previous build data
         run: |
           rm -rf .buildozer
           rm -rf bin
