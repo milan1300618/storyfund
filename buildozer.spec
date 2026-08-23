@@ -22,6 +22,10 @@ android.ndk = 27c
 android.archs = arm64-v8a, armeabi-v7a
 android.allow_backup = True
 
+# Automatically accept Android SDK licenses in CI
+android.accept_sdk_license = True
+android.skip_update = False
+
 osx.kivy_version = 2.2.0
 
 [buildozer]
