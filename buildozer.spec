@@ -1,4 +1,4 @@
-# StoryFund - stable python-for-android configuration
+# StoryFund - deliberately pinned to the stable 2022 toolchain
 
 [app]
 
@@ -16,23 +16,28 @@ requirements = python3,kivy
 orientation = portrait
 fullscreen = 0
 
-android.api = 35
-android.minapi = 24
-android.ndk = 27c
+# Stable p4a v2022.12.20 toolchain:
+# target API 33, minimum API 21, NDK r25b.
+android.api = 33
+android.minapi = 21
+android.ndk = 25b
 android.archs = arm64-v8a,armeabi-v7a
 
 android.accept_sdk_license = True
-android.skip_update = False
 android.allow_backup = True
 
-#
-# IMPORTANT:
-# This p4a commit is immediately before the Python 3.14 update.
-# It uses Python 3.11.13 for the Android Python recipe.
-#
+[app:source.exclude_dirs]
+__pycache__
+.git
+.github
+.buildozer
+bin
 
-p4a.branch = develop
-p4a.commit = 7593f9d
+#
+# Pin python-for-android to the released 2022.12.20 commit.
+#
+p4a.branch = master
+p4a.commit = cc6481b
 
 [buildozer]
 
