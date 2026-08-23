@@ -8,47 +8,41 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-22.04
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Set up Python
+      - name: Set up Python 3.12
         uses: actions/setup-python@v5
         with:
-          python-version: "3.11"
+          python-version: "3.12"
 
-      - name: Set up Java
+      - name: Set up Java 17
         uses: actions/setup-java@v5
         with:
           distribution: temurin
           java-version: "17"
 
-      - name: Install dependencies
+      - name: Install system dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y \
-            git zip unzip \
-            autoconf automake libtool libltdl-dev pkg-config \
-            zlib1g-dev libncurses5-dev libncursesw5-dev \
-            libtinfo6 libffi-dev libssl-dev \
-            cmake autopoint gettext
+          sudo apt-get install -y             git zip unzip             autoconf automake libtool libltdl-dev pkg-config             zlib1g-dev libncurses5-dev libncursesw5-dev             libtinfo5 libffi-dev libssl-dev             cmake gettext autopoint
 
-      - name: Install Buildozer
+      - name: Install Buildozer and Python build tools
         run: |
           python -m pip install --upgrade pip
-          pip install git+https://github.com/kivy/buildozer
-          pip install legacy-cgi setuptools cython==0.29.34
+          pip install buildozer setuptools cython==0.29.34
 
-      - name: Clean previous Buildozer data
+      - name: Clean Buildozer cache
         run: |
           rm -rf .buildozer
           rm -rf bin
 
       - name: Build APK
         run: |
-          yes | buildozer -v android debug
+          buildozer -v android debug
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
