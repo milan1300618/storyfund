@@ -20,7 +20,7 @@ class UsersScreen(MDScreen):
             if t and t not in u["nik"].upper():
                 continue
             shown+=1
-            item=OneLineListItem(text=f"{u['nik']}   ({'AKTÍVNY' if u.get('active',True) else 'BLOKOVANÝ'})   {u.get('stories_count',0)}/{get("MAX_STORIES_PER_CYCLE")}")
+            item=OneLineListItem(text=f"{u['nik']}   ({'AKTÍVNY' if u.get('active',True) else 'BLOKOVANÝ'})   {u.get('stories_count',0)}/{get('MAX_STORIES_PER_CYCLE')}")
             item.bind(on_release=lambda x,user=u:self.open_user(user))
             self.ids.users_list.add_widget(item)
         self.ids.count_label.text=f"Používateľov: {len(self.all_users)} | Zobrazených: {shown}"
