@@ -55,7 +55,7 @@ class CreateStoryScreen(MDScreen):
         )
 
         title = MDLabel(
-            text=f"Vyber {get("WORDS_TO_SELECT")} slová a vytvor príbeh",
+            text=f"Vyber {get('WORDS_TO_SELECT')} slová a vytvor príbeh",
             halign="center",
             font_style="H5",
             size_hint_y=None,
