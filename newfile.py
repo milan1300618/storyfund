@@ -100,7 +100,7 @@ class HomeScreen(MDScreen):
         root.add_widget(buttons)
 
         account_btn = MDRaisedButton(
-            text="💰 TRANSPARENTNÝ ÚČET",
+            text="TRANSPARENTNÝ ÚČET",
             size_hint=(1, None),
             height=dp(42)
         )
@@ -150,7 +150,7 @@ class HomeScreen(MDScreen):
                 )
 
                 author = MDLabel(
-                    text=f"👤 {s['nik']}",
+                    text=f" {s['nik']}",
                     bold=True,
                     size_hint_y=None,
                     adaptive_height=True
@@ -164,7 +164,7 @@ class HomeScreen(MDScreen):
                 )
 
                 score = MDLabel(
-                    text=f"⭐ AI index: {s['score']} %",
+                    text=f" AI index: {s['score']} %",
                     size_hint_y=None,
                     adaptive_height=True
                 )
@@ -197,9 +197,7 @@ class HomeScreen(MDScreen):
         # =====================================
 
         summary = MDRaisedButton(
-            text="💰 MINULOTÝŽDŇOVÁ ZBIERKA
-Vyzbierané: 245,60 €
-👥 Odmenených autorov: 12   📅 13.07.2026",
+            text=" MINULOTÝŽDŇOVÁ ZBIERKA\nVyzbierané: 245,60 €\n👥 Odmenených autorov: 12   📅 13.07.2026",
             size_hint=(1, None),
             height=dp(88)
         )
