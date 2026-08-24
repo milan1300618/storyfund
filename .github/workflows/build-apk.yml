@@ -38,7 +38,7 @@ jobs:
           python3 -m pip install --upgrade pip
           python3 -m pip install \
             buildozer==1.5.0 \
-            Cython==0.29.19 \
+            Cython==0.29.33 \
             virtualenv
 
       - name: Build APK
