@@ -21,7 +21,7 @@ from backend import (
     can_add_story
 )
 
-from login import get_current_user
+from screens.login import get_current_user
 
 from settings_manager import get
 from payment_check import check_payment
@@ -88,7 +88,7 @@ class CreateStoryScreen(MDScreen):
             return
 
         self.info = MDLabel(
-            text=f"Vybrané: 0 / {get("WORDS_TO_SELECT")}",
+            text=f"Vybrané: 0 / {get('WORDS_TO_SELECT')}",
             halign="center",
             size_hint_y=None,
             height=dp(35)
@@ -182,7 +182,7 @@ class CreateStoryScreen(MDScreen):
             button.md_bg_color = (0, 0.7, 0.2, 1)
 
         self.info.text = (
-            f"Vybrané: {len(self.selected)} / {get("WORDS_TO_SELECT")}"
+            f"Vybrané: {len(self.selected)} / {get('WORDS_TO_SELECT')}"
         )
 
         self.generate_btn.disabled = (
@@ -216,7 +216,7 @@ class CreateStoryScreen(MDScreen):
         if get("SHOW_AI_SCORE"):
 
             text += (
-                f"\n\n⭐ AI index: {self.score}%"
+                f"\n\n AI index: {self.score}%"
             )
 
         self.story_label.text = text
@@ -271,7 +271,7 @@ class CreateStoryScreen(MDScreen):
             self.score
         )
 
-        text = "✅ Príbeh bol uložený."
+        text = " Príbeh bol uložený."
 
 
         self.story_label.text = text
