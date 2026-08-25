@@ -21,7 +21,7 @@ from backend import (
     can_add_story
 )
 
-from screens.login import get_current_user
+from login import get_current_user
 
 from settings_manager import get
 from payment_check import check_payment
