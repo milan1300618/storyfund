@@ -41,12 +41,23 @@ class LoginScreen(MDScreen):
 
         # ADMIN – Firebase Authentication
         if nik.lower() == ADMIN_EMAIL.lower():
-            if login_admin(nik, pin):
+
+            auth_result = login_admin(nik, pin)
+
+            if auth_result.get("ok"):
                 current_user = "ADMIN"
                 self.manager.current = "admin"
                 return
 
-            self.ids.info.text = "Nesprávny e-mail alebo heslo"
+            # Dočasne zobrazíme skutočnú chybu z Firebase.
+            error = auth_result.get("error")
+
+            if isinstance(error, dict):
+                error_message = error.get("error", error)
+            else:
+                error_message = error
+
+            self.ids.info.text = "Firebase: " + str(error_message)
             return
 
         # BEŽNÝ POUŽÍVATEĽ – NIK + PIN
