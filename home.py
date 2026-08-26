@@ -12,6 +12,8 @@ from kivymd.uix.button import MDRaisedButton
 from kivymd.uix.scrollview import MDScrollView
 from kivymd.uix.card import MDCard
 
+from kivy.uix.image import Image
+from kivy.uix.modalview import ModalView
 from kivy.metrics import dp
 from kivy.clock import Clock
 
@@ -26,6 +28,22 @@ TRANSPARENT_ACCOUNT = (
     "transparentny-ucet.html?"
     "IBAN=SK5611110000001491048088"
 )
+
+QR_IMAGE = "qr_payment.jpg"
+
+
+class ClickableImage(Image):
+
+    def __init__(self, callback=None, **kwargs):
+        super().__init__(**kwargs)
+        self.callback = callback
+
+    def on_touch_down(self, touch):
+        if self.collide_point(*touch.pos):
+            if self.callback:
+                self.callback()
+            return True
+        return super().on_touch_down(touch)
 
 
 class HomeScreen(MDScreen):
@@ -66,10 +84,11 @@ class HomeScreen(MDScreen):
             "last_per_person": last_per_person,
         }
 
+
     def build_screen(self):
 
         self.clear_widgets()
-        stats=self.get_summary_data()
+        stats = self.get_summary_data()
 
         root = MDBoxLayout(
             orientation="vertical",
@@ -135,15 +154,27 @@ class HomeScreen(MDScreen):
 
         root.add_widget(buttons)
 
-        account_btn = MDRaisedButton(
-            text=" TRANSPARENTNÝ ÚČET",
+        # =====================================
+        # QR platba
+        # =====================================
+
+        qr_card = MDCard(
+            orientation="vertical",
             size_hint=(1, None),
-            height=dp(42)
+            height=dp(105),
+            padding=dp(4),
+            radius=[12]
         )
-        account_btn.bind(
-            on_release=self.open_account
+
+        qr_image = ClickableImage(
+            source=QR_IMAGE,
+            fit_mode="contain",
+            size_hint=(1, 1),
+            callback=self.open_qr_fullscreen
         )
-        root.add_widget(account_btn)
+
+        qr_card.add_widget(qr_image)
+        root.add_widget(qr_card)
 
         # =====================================
         # Feed (pripravený na budúce auto-scroll)
@@ -194,7 +225,6 @@ class HomeScreen(MDScreen):
 
                 story = MDLabel(
                     text=s["story"],
-                    
                     size_hint_y=None,
                     adaptive_height=True
                 )
@@ -211,7 +241,11 @@ class HomeScreen(MDScreen):
 
                 card.bind(
                     width=lambda *_,
-                    lbl=story: setattr(lbl, "text_size", (card.width - dp(30), None))
+                    lbl=story: setattr(
+                        lbl,
+                        "text_size",
+                        (card.width - dp(30), None)
+                    )
                 )
 
                 self.feed.add_widget(card)
@@ -254,7 +288,10 @@ class HomeScreen(MDScreen):
 
         summary.add_widget(
             MDLabel(
-                text=f"Fond aktuálneho kola: {stats['fund']:.2f} €\nPočet darcov: {stats['donors']}",
+                text=(
+                    f"Fond aktuálneho kola: {stats['fund']:.2f} €\n"
+                    f"Počet darcov: {stats['donors']}"
+                ),
                 halign="center",
                 size_hint_y=None,
                 height=dp(38)
@@ -282,9 +319,32 @@ class HomeScreen(MDScreen):
         Clock.unschedule(self.auto_scroll)
         Clock.schedule_interval(self.auto_scroll, 0.03)
 
+
+    # =====================================
+    # QR kód - malé / veľké zobrazenie
+    # =====================================
+
+    def open_qr_fullscreen(self):
+
+        modal = ModalView(
+            size_hint=(1, 1),
+            auto_dismiss=False,
+            background_color=(0, 0, 0, 1)
+        )
+
+        full_qr = ClickableImage(
+            source=QR_IMAGE,
+            fit_mode="contain",
+            size_hint=(1, 1),
+            callback=modal.dismiss
+        )
+
+        modal.add_widget(full_qr)
+        modal.open()
+
+
     # =====================================
     # Transparentný účet
-    # (zostáva zachovaný pre budúce použitie)
     # =====================================
 
     def open_account(self, *args):
@@ -292,6 +352,7 @@ class HomeScreen(MDScreen):
         webbrowser.open(
             TRANSPARENT_ACCOUNT
         )
+
 
     # =====================================
     # Nový príbeh
@@ -301,6 +362,7 @@ class HomeScreen(MDScreen):
 
         self.manager.current = "create_story"
 
+
     # =====================================
     # Profil
     # =====================================
@@ -308,6 +370,7 @@ class HomeScreen(MDScreen):
     def profile(self, *args):
 
         self.manager.current = "profile"
+
 
     # =====================================
     # Odhlásenie
@@ -317,13 +380,16 @@ class HomeScreen(MDScreen):
 
         self.manager.current = "login"
 
+
     # =====================================
     # Automatické pomalé rolovanie
     # =====================================
 
     def auto_scroll(self, dt):
+
         if not hasattr(self, "scroll"):
             return
+
         step = 0.0010
         y = self.scroll.scroll_y
         self.scroll.scroll_y = 1.0 if y <= 0 else y - step
