@@ -5,9 +5,16 @@
 import json
 import urllib.request
 import urllib.error
+import ssl
+import certifi
+
 from firebase_auth import get_id_token
 
 FIREBASE_URL = "https://storyfund-59e53-default-rtdb.europe-west1.firebasedatabase.app"
+
+SSL_CONTEXT = ssl.create_default_context(
+    cafile=certifi.where()
+)
 
 DEFAULTS = {
     "users": [],
@@ -26,9 +33,6 @@ DEFAULTS = {
 def _url(path):
     url = f"{FIREBASE_URL}/{path.strip('/')}.json"
 
-    # Firebase Authentication token.
-    # Po Firebase Auth prihlaseni sa token automaticky
-    # prida ku kazdej databazovej poziadavke.
     token = get_id_token()
 
     if token:
@@ -51,12 +55,18 @@ def _request(path, method="GET", data=None):
     )
 
     try:
-        with urllib.request.urlopen(request, timeout=15) as response:
+        with urllib.request.urlopen(
+            request,
+            timeout=15,
+            context=SSL_CONTEXT
+        ) as response:
             raw = response.read().decode("utf-8")
             return json.loads(raw) if raw else None
+
     except urllib.error.HTTPError as e:
         detail = e.read().decode("utf-8", errors="ignore")
         raise RuntimeError(f"Firebase chyba HTTP {e.code}: {detail}")
+
     except Exception as e:
         raise RuntimeError(f"Firebase chyba: {e}")
 
