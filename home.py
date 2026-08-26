@@ -244,7 +244,7 @@ class HomeScreen(MDScreen):
 
         summary.add_widget(
             MDLabel(
-                text="📊 PREHĽAD STORYFUNDU",
+                text="PREHĽAD STORYFUNDU",
                 font_style="H6",
                 halign="center",
                 size_hint_y=None,
@@ -266,8 +266,8 @@ class HomeScreen(MDScreen):
                 text=(
                     f" MINULÉ KOLO\n"
                     f" Rozdelené medzi: {stats['last_winners']} ľudí\n"
-                    f" Vyzbierané a rozdelené: {stats['last_fund']:.2f} €\n"
-                    f" Na jedného: {stats['last_per_person']:.2f} €"
+                    f" Darované a rozdané: {stats['last_fund']:.2f} €\n"
+                    f" Na NIK: {stats['last_per_person']:.2f} €"
                 ),
                 halign="center",
                 size_hint_y=None,
@@ -324,6 +324,6 @@ class HomeScreen(MDScreen):
     def auto_scroll(self, dt):
         if not hasattr(self, "scroll"):
             return
-        step = 0.0005
+        step = 0.0010
         y = self.scroll.scroll_y
         self.scroll.scroll_y = 1.0 if y <= 0 else y - step
