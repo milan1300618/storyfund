@@ -260,7 +260,7 @@ class CreateStoryScreen(MDScreen):
         if not get("TEST_MODE"):
             if not check_payment(nik):
                 self.story_label.text = (
-                    "Nebola nájdená platba s týmto nickom za aktuálne kolo."
+                    "Neregistruje sa dar (2€) na účte s týmto nickom za aktuálne kolo."
                 )
                 return
 
