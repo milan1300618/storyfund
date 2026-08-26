@@ -5,6 +5,8 @@
 import json
 import urllib.request
 import urllib.error
+import ssl
+import certifi
 
 
 # Firebase Web API key z konfigurácie StoryFund web app.
@@ -18,6 +20,13 @@ AUTH_URL = (
 SIGNUP_URL = (
     "https://identitytoolkit.googleapis.com/v1/"
     "accounts:signUp"
+)
+
+
+# Použijeme CA certifikáty z balíka certifi.
+# Toto rieši SSL CERTIFICATE_VERIFY_FAILED v APK.
+SSL_CONTEXT = ssl.create_default_context(
+    cafile=certifi.where()
 )
 
 
@@ -40,7 +49,11 @@ def _post_auth(url, payload):
     )
 
     try:
-        with urllib.request.urlopen(request, timeout=15) as response:
+        with urllib.request.urlopen(
+            request,
+            timeout=15,
+            context=SSL_CONTEXT
+        ) as response:
             return {
                 "ok": True,
                 "data": json.loads(
@@ -160,9 +173,7 @@ def login_admin(email, password):
     if not result["ok"]:
         _current_id_token = None
 
-        # DÔLEŽITÉ:
-        # Zachováme rovnaký návratový typ ako doteraz,
-        # ale pripojíme skutočnú Firebase chybu.
+        # Zachováme skutočnú Firebase chybu pre login.py.
         return {
             "ok": False,
             "error": result.get("error")
