@@ -159,10 +159,21 @@ def login_admin(email, password):
 
     if not result["ok"]:
         _current_id_token = None
-        return False
+
+        # DÔLEŽITÉ:
+        # Zachováme rovnaký návratový typ ako doteraz,
+        # ale pripojíme skutočnú Firebase chybu.
+        return {
+            "ok": False,
+            "error": result.get("error")
+        }
 
     data = result["data"]
 
     _current_id_token = data.get("idToken")
 
-    return bool(_current_id_token)
+    return {
+        "ok": bool(_current_id_token),
+        "idToken": data.get("idToken"),
+        "error": None
+    }
