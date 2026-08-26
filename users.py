@@ -23,7 +23,7 @@ class UsersScreen(MDScreen):
             item=OneLineListItem(text=f"{u['nik']}   ({'AKTÍVNY' if u.get('active',True) else 'BLOKOVANÝ'})   {u.get('stories_count',0)}/{get('MAX_STORIES_PER_CYCLE')}")
             item.bind(on_release=lambda x,user=u:self.open_user(user))
             self.ids.users_list.add_widget(item)
-        self.ids.count_label.text=f"Používateľov: {len(self.all_users)} | Zobrazených: {shown}"
+        self.ids.count_label.text=f"Darcov: {len(self.all_users)} | Zobrazených: {shown}"
 
     def open_user(self,user):
         s=self.manager.get_screen("user_detail")
