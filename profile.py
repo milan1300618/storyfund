@@ -100,7 +100,7 @@ Najvyššie AI skóre: {best} %
 Registrovaných používateľov: {len(users)}
 Vytvorených príbehov: {len(stories)}
 Uzavretých kôl: {len(history)}
-Vyplatených odmien: {winners}
+Vyplatených odarov: {winners}
 Celková vyplatená suma: {total:.2f} €'''
 
         root.add_widget(
