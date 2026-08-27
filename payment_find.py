@@ -4,7 +4,7 @@ from datetime import date, timedelta
 ACCOUNT_NUMBER = "01491048088"
 ENTITY_CODE = "SK"
 
-TEST_ALL_TRANSACTIONS = True  # False = iba aktuálny týždeň
+TEST_ALL_TRANSACTIONS = False  # False = iba aktuálny týždeň
 
 
 def _current_week():
@@ -43,13 +43,23 @@ def find_payment(nick):
 
         data = r.json()
 
-        for t in data.get("iHubResponseInfo", []):
-            text = (
-                str(t.get("counterParty", "")) + " " +
-                str(t.get("transactionDetails", ""))
-            )
+        # NIK má tvar SF + 5 číslic.
+        # Do platby sa zadáva iba 5-ciferné číslo ako VS.
+        search_number = nick.strip()
 
-            if nick.lower() in text.lower():
+        if search_number.upper().startswith("SF"):
+            search_number = search_number[2:]
+
+        search_number = search_number.strip()
+
+        # Hľadáme presnú zhodu iba vo Variabilnom symbole.
+        for t in data.get("iHubResponseInfo", []):
+
+            variable_code = str(
+                t.get("variableCode", "")
+            ).strip()
+
+            if variable_code == search_number:
                 return t
 
         return None
@@ -72,4 +82,3 @@ if __name__ == "__main__":
 
         print("\n=== CELÁ TRANSAKCIA ===")
         print(json.dumps(result, indent=4, ensure_ascii=False))
-
