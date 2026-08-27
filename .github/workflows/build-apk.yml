@@ -24,6 +24,7 @@ jobs:
             automake \
             libtool \
             pkg-config \
+            gettext \
             zlib1g-dev \
             libncurses5-dev \
             libncursesw5-dev \
