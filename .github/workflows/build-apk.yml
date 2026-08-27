@@ -34,6 +34,11 @@ jobs:
             libssl-dev \
             wget
 
+      - name: Check autopoint
+        run: |
+          which autopoint
+          autopoint --version
+
       - name: Install Buildozer
         run: |
           python3 -m pip install --upgrade pip
