@@ -3,7 +3,11 @@
 # screens/home.py
 # ======================================
 
+import os
 import webbrowser
+
+import pay_by_square
+import segno
 
 from kivymd.uix.screen import MDScreen
 from kivymd.uix.boxlayout import MDBoxLayout
@@ -32,8 +36,11 @@ TRANSPARENT_ACCOUNT = (
     "IBAN=SK5611110000001491048088"
 )
 
-QR_IMAGE = "qr_payment.jpg"
 QR_MINI_IMAGE = "qr_mini.jpg"
+
+PAYMENT_IBAN = "SK5611110000001491048088"
+PAYMENT_AMOUNT = 2.00
+PAYMENT_BENEFICIARY = "Transparentny fond"
 
 
 class ClickableImage(ButtonBehavior, Image):
@@ -319,30 +326,74 @@ class HomeScreen(MDScreen):
         Clock.schedule_interval(self.auto_scroll, 0.03)
 
     # =====================================
-    # QR – otvorenie CELÉHO qr_payment.jpg
+    # QR – dynamický PAY by square podľa NIK
     # =====================================
 
     def open_qr_fullscreen(self, *args):
 
-        modal = ModalView(
-            size_hint=(1, 1),
-            auto_dismiss=False,
-            background_color=(0, 0, 0, 1)
-        )
+        try:
+            nick = str(get_current_user()).strip()
 
-        full_qr = ClickableImage(
-            source=QR_IMAGE,
-            size_hint=(1, 1),
-            allow_stretch=True,
-            keep_ratio=True
-        )
+            # SF23404 -> 23404
+            variable_symbol = nick
 
-        full_qr.bind(
-            on_release=modal.dismiss
-        )
+            if variable_symbol.upper().startswith("SF"):
+                variable_symbol = variable_symbol[2:]
 
-        modal.add_widget(full_qr)
-        modal.open()
+            variable_symbol = variable_symbol.strip()
+
+            if not variable_symbol:
+                return
+
+            # Vytvorenie PAY by square podľa aktuálne prihláseného používateľa.
+            code = pay_by_square.generate(
+                amount=PAYMENT_AMOUNT,
+                iban=PAYMENT_IBAN,
+                currency="EUR",
+                variable_symbol=variable_symbol,
+                beneficiary_name=PAYMENT_BENEFICIARY
+            )
+
+            # QR obrázok sa vytvára iba lokálne v telefóne.
+            qr_path = os.path.join(
+                self.get_app_qr_directory(),
+                f"qr_payment_{variable_symbol}.png"
+            )
+
+            qr = segno.make_qr(code)
+            qr.save(qr_path, scale=10)
+
+            modal = ModalView(
+                size_hint=(1, 1),
+                auto_dismiss=False,
+                background_color=(0, 0, 0, 1)
+            )
+
+            full_qr = ClickableImage(
+                source=qr_path,
+                size_hint=(1, 1),
+                allow_stretch=True,
+                keep_ratio=True
+            )
+
+            full_qr.bind(
+                on_release=modal.dismiss
+            )
+
+            modal.add_widget(full_qr)
+            modal.open()
+
+        except Exception as e:
+            print(f"QR chyba: {e}")
+
+    def get_app_qr_directory(self):
+
+        from kivy.app import App
+
+        directory = App.get_running_app().user_data_dir
+        os.makedirs(directory, exist_ok=True)
+
+        return directory
 
     # =====================================
     # Transparentný účet
