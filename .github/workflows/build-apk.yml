@@ -26,6 +26,7 @@ jobs:
             pkg-config \
             gettext \
             gettext-base \
+            autopoint \
             zlib1g-dev \
             libncurses5-dev \
             libncursesw5-dev \
