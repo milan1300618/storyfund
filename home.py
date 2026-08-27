@@ -6,9 +6,6 @@
 import os
 import webbrowser
 
-import pay_by_square
-import segno
-
 from kivymd.uix.screen import MDScreen
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.label import MDLabel
@@ -332,6 +329,9 @@ class HomeScreen(MDScreen):
     def open_qr_fullscreen(self, *args):
 
         try:
+            import pay_by_square
+            import segno
+
             nick = str(get_current_user()).strip()
 
             # SF23404 -> 23404
