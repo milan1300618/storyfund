@@ -25,6 +25,7 @@ jobs:
             libtool \
             pkg-config \
             gettext \
+            gettext-base \
             zlib1g-dev \
             libncurses5-dev \
             libncursesw5-dev \
