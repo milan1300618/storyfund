@@ -9,7 +9,7 @@ source.include_exts = py,kv,png,jpg,jpeg,json,txt
 
 version = 0.1
 
-requirements = python3,kivy==2.2.1,kivymd==1.2.0,requests,certifi,pay-by-square,segno
+requirements = python3,kivy==2.2.1,kivymd==1.2.0,requests,certifi,pay-by-square,segno,liblzma
 
 orientation = portrait
 fullscreen = 0
