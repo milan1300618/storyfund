@@ -17,7 +17,6 @@ from kivy.uix.image import Image
 from kivy.uix.relativelayout import RelativeLayout
 from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.modalview import ModalView
-
 from kivy.metrics import dp
 from kivy.clock import Clock
 
@@ -48,7 +47,6 @@ class HomeScreen(MDScreen):
 
     def on_enter(self):
         self.build_screen()
-
 
     def get_summary_data(self):
         fund = get_fund()
@@ -83,269 +81,129 @@ class HomeScreen(MDScreen):
         }
 
     def build_screen(self):
-
         self.clear_widgets()
         stats=self.get_summary_data()
 
-        root = MDBoxLayout(
-            orientation="vertical",
-            spacing=dp(18),
-            padding=dp(15)
-        )
+        root = MDBoxLayout(orientation="vertical", spacing=dp(18), padding=dp(15))
 
-        # =====================================
-        # Horná pevná časť
-        # =====================================
-
-        title = MDLabel(
-            text="StoryFund",
-            halign="center",
-            font_style="H4",
-            size_hint_y=None,
-            height=dp(55)
-        )
-
+        title = MDLabel(text="StoryFund", halign="center", font_style="H4",
+                        size_hint_y=None, height=dp(55))
         root.add_widget(title)
 
-        user_label = MDLabel(
-            text=f"Vitaj, {get_current_user()} ",
-            halign="center",
-            size_hint_y=None,
-            height=dp(30)
-        )
+        user_label = MDLabel(text=f"Vitaj, {get_current_user()} ", halign="center",
+                             size_hint_y=None, height=dp(30))
         root.add_widget(user_label)
 
-        buttons = MDBoxLayout(
-            orientation="horizontal",
-            spacing=dp(8),
-            size_hint_y=None,
-            height=dp(48)
-        )
+        buttons = MDBoxLayout(orientation="horizontal", spacing=dp(8),
+                              size_hint_y=None, height=dp(48))
 
-        new_story_btn = MDRaisedButton(
-            text="NOVÝ PRÍBEH",
-            size_hint_x=1
-        )
-        new_story_btn.bind(
-            on_release=self.create_story
-        )
+        new_story_btn = MDRaisedButton(text="NOVÝ PRÍBEH", size_hint_x=1)
+        new_story_btn.bind(on_release=self.create_story)
         buttons.add_widget(new_story_btn)
 
-        profile_btn = MDRaisedButton(
-            text="PROFIL",
-            size_hint_x=1
-        )
-        profile_btn.bind(
-            on_release=self.profile
-        )
+        profile_btn = MDRaisedButton(text="PROFIL", size_hint_x=1)
+        profile_btn.bind(on_release=self.profile)
         buttons.add_widget(profile_btn)
 
-        logout_btn = MDRaisedButton(
-            text="ODHLÁSIŤ",
-            size_hint_x=1
-        )
-        logout_btn.bind(
-            on_release=self.logout
-        )
+        logout_btn = MDRaisedButton(text="ODHLÁSIŤ", size_hint_x=1)
+        logout_btn.bind(on_release=self.logout)
         buttons.add_widget(logout_btn)
-
         root.add_widget(buttons)
 
-        # =====================================
-        # EXISTUJÚCE tlačidlo Transparentný účet
-        # + mini QR VPRAVO VO VNÚTRI tlačidla
-        # =====================================
+        account_area = RelativeLayout(size_hint=(1, None), height=dp(42))
 
-        account_area = RelativeLayout(
-            size_hint=(1, None),
-            height=dp(42)
-        )
-
-        account_btn = MDRaisedButton(
-            text=" TRANSPARENTNÝ ÚČET",
-            size_hint=(1, 1)
-        )
-        account_btn.bind(
-            on_release=self.open_account
-        )
+        account_btn = MDRaisedButton(text=" TRANSPARENTNÝ ÚČET", size_hint=(1, 1))
+        account_btn.bind(on_release=self.open_account)
         account_area.add_widget(account_btn)
 
         mini_qr = ClickableImage(
             source=QR_MINI_IMAGE,
             size_hint=(None, None),
             size=(dp(35), dp(35)),
-            pos_hint={
-                "right": 0.985,
-                "center_y": 0.5
-            }
+            pos_hint={"right": 0.985, "center_y": 0.5}
         )
-        mini_qr.bind(
-            on_release=self.open_qr_fullscreen
-        )
+        mini_qr.bind(on_release=self.open_qr_fullscreen)
         account_area.add_widget(mini_qr)
 
         root.add_widget(account_area)
 
-        # =====================================
-        # Feed (pripravený na budúce auto-scroll)
-        # =====================================
-
         self.scroll = MDScrollView()
-
         self.feed = MDBoxLayout(
-            orientation="vertical",
-            spacing=dp(15),
-            size_hint_y=None,
-            adaptive_height=True,
-            padding=(0, 0, 0, dp(10))
+            orientation="vertical", spacing=dp(15), size_hint_y=None,
+            adaptive_height=True, padding=(0, 0, 0, dp(10))
         )
 
         stories = load_feed()
 
         if not stories:
-
-            self.feed.add_widget(
-                MDLabel(
-                    text="Zatiaľ nie sú žiadne príbehy.",
-                    halign="center",
-                    size_hint_y=None,
-                    height=dp(50)
-                )
-            )
-
+            self.feed.add_widget(MDLabel(
+                text="Zatiaľ nie sú žiadne príbehy.", halign="center",
+                size_hint_y=None, height=dp(50)
+            ))
         else:
-
             for s in stories:
-
                 card = MDCard(
-                    orientation="vertical",
-                    padding=dp(15),
-                    spacing=dp(10),
-                    radius=[15],
-                    size_hint_y=None,
-                    adaptive_height=True
+                    orientation="vertical", padding=dp(15), spacing=dp(10),
+                    radius=[15], size_hint_y=None, adaptive_height=True
                 )
-
-                author = MDLabel(
-                    text=f"👤 {s['nik']}",
-                    bold=True,
-                    size_hint_y=None,
-                    adaptive_height=True
-                )
-
-                story = MDLabel(
-                    text=s["story"],
-                    size_hint_y=None,
-                    adaptive_height=True
-                )
-
-                score = MDLabel(
-                    text=f" AI index: {s['score']} %",
-                    size_hint_y=None,
-                    adaptive_height=True
-                )
-
+                author = MDLabel(text=f"👤 {s['nik']}", bold=True,
+                                 size_hint_y=None, adaptive_height=True)
+                story = MDLabel(text=s["story"], size_hint_y=None,
+                                adaptive_height=True)
+                score = MDLabel(text=f" AI index: {s['score']} %",
+                                size_hint_y=None, adaptive_height=True)
                 card.add_widget(author)
                 card.add_widget(story)
                 card.add_widget(score)
-
-                card.bind(
-                    width=lambda *_,
-                    lbl=story: setattr(lbl, "text_size", (card.width - dp(30), None))
-                )
-
+                card.bind(width=lambda *_, lbl=story:
+                          setattr(lbl, "text_size", (card.width - dp(30), None)))
                 self.feed.add_widget(card)
 
         self.scroll.add_widget(self.feed)
         root.add_widget(self.scroll)
 
-        # medzera pred spodným panelom
-        root.add_widget(
-            MDLabel(
-                text="",
-                size_hint_y=None,
-                height=dp(16)
-            )
-        )
-
-        # =====================================
-        # Súhrn posledného kola (pevný spodný panel)
-        # =====================================
+        root.add_widget(MDLabel(text="", size_hint_y=None, height=dp(16)))
 
         summary = MDCard(
-            orientation="vertical",
-            size_hint_y=None,
-            height=dp(175),
-            padding=dp(12),
-            spacing=dp(5),
-            radius=[12],
+            orientation="vertical", size_hint_y=None, height=dp(175),
+            padding=dp(12), spacing=dp(5), radius=[12],
             md_bg_color=(0.15, 0.35, 0.75, 1)
         )
 
-        summary.add_widget(
-            MDLabel(
-                text="PREHĽAD STORYFUNDU",
-                font_style="H6",
-                halign="center",
-                size_hint_y=None,
-                height=dp(22)
-            )
-        )
-
-        summary.add_widget(
-            MDLabel(
-                text=f"Fond aktuálneho kola: {stats['fund']:.2f} €\nPočet darcov: {stats['donors']}",
-                halign="center",
-                size_hint_y=None,
-                height=dp(38)
-            )
-        )
-
-        summary.add_widget(
-            MDLabel(
-                text=(
-                    f" MINULÉ KOLO\n"
-                    f" Rozdelené medzi: {stats['last_winners']} ľudí\n"
-                    f" Darované a rozdané: {stats['last_fund']:.2f} €\n"
-                    f" Na NIK: {stats['last_per_person']:.2f} €"
-                ),
-                halign="center",
-                size_hint_y=None,
-                height=dp(82)
-            )
-        )
+        summary.add_widget(MDLabel(text="PREHĽAD STORYFUNDU", font_style="H6",
+                                   halign="center", size_hint_y=None, height=dp(22)))
+        summary.add_widget(MDLabel(
+            text=f"Fond aktuálneho kola: {stats['fund']:.2f} €\nPočet darcov: {stats['donors']}",
+            halign="center", size_hint_y=None, height=dp(38)
+        ))
+        summary.add_widget(MDLabel(
+            text=(f" MINULÉ KOLO\n"
+                  f" Rozdelené medzi: {stats['last_winners']} ľudí\n"
+                  f" Darované a rozdané: {stats['last_fund']:.2f} €\n"
+                  f" Na NIK: {stats['last_per_person']:.2f} €"),
+            halign="center", size_hint_y=None, height=dp(82)
+        ))
 
         root.add_widget(summary)
-
         self.add_widget(root)
 
         Clock.unschedule(self.auto_scroll)
         Clock.schedule_interval(self.auto_scroll, 0.03)
 
-    # =====================================
-    # QR – dynamický PAY by square podľa NIK
-    # =====================================
-
     def open_qr_fullscreen(self, *args):
-
         try:
             import pay_by_square
             import segno
 
             nick = str(get_current_user()).strip()
-
-            # SF23404 -> 23404
             variable_symbol = nick
-
             if variable_symbol.upper().startswith("SF"):
                 variable_symbol = variable_symbol[2:]
-
             variable_symbol = variable_symbol.strip()
 
             if not variable_symbol:
-                return
+                raise ValueError("NIK je prázdny.")
 
-            # Vytvorenie PAY by square podľa aktuálne prihláseného používateľa.
             code = pay_by_square.generate(
                 amount=PAYMENT_AMOUNT,
                 iban=PAYMENT_IBAN,
@@ -354,7 +212,6 @@ class HomeScreen(MDScreen):
                 beneficiary_name=PAYMENT_BENEFICIARY
             )
 
-            # QR obrázok sa vytvára iba lokálne v telefóne.
             qr_path = os.path.join(
                 self.get_app_qr_directory(),
                 f"qr_payment_{variable_symbol}.png"
@@ -363,75 +220,46 @@ class HomeScreen(MDScreen):
             qr = segno.make_qr(code)
             qr.save(qr_path, scale=10)
 
-            modal = ModalView(
-                size_hint=(1, 1),
-                auto_dismiss=False,
-                background_color=(0, 0, 0, 1)
-            )
+            modal = ModalView(size_hint=(1, 1), auto_dismiss=False,
+                              background_color=(0, 0, 0, 1))
 
             full_qr = ClickableImage(
-                source=qr_path,
-                size_hint=(1, 1),
-                allow_stretch=True,
-                keep_ratio=True
+                source=qr_path, size_hint=(1, 1),
+                allow_stretch=True, keep_ratio=True
             )
-
-            full_qr.bind(
-                on_release=modal.dismiss
-            )
-
+            full_qr.bind(on_release=modal.dismiss)
             modal.add_widget(full_qr)
             modal.open()
 
         except Exception as e:
-            print(f"QR chyba: {e}")
+            from kivymd.uix.dialog import MDDialog
+            from kivymd.uix.button import MDFlatButton
+
+            dialog = MDDialog(
+                title="QR chyba",
+                text=f"{type(e).__name__}: {e}",
+                buttons=[MDFlatButton(text="OK")]
+            )
+            dialog.buttons[0].bind(on_release=dialog.dismiss)
+            dialog.open()
 
     def get_app_qr_directory(self):
-
         from kivy.app import App
-
         directory = App.get_running_app().user_data_dir
         os.makedirs(directory, exist_ok=True)
-
         return directory
 
-    # =====================================
-    # Transparentný účet
-    # =====================================
-
     def open_account(self, *args):
-
-        webbrowser.open(
-            TRANSPARENT_ACCOUNT
-        )
-
-    # =====================================
-    # Nový príbeh
-    # =====================================
+        webbrowser.open(TRANSPARENT_ACCOUNT)
 
     def create_story(self, *args):
-
         self.manager.current = "create_story"
 
-    # =====================================
-    # Profil
-    # =====================================
-
     def profile(self, *args):
-
         self.manager.current = "profile"
 
-    # =====================================
-    # Odhlásenie
-    # =====================================
-
     def logout(self, *args):
-
         self.manager.current = "login"
-
-    # =====================================
-    # Automatické pomalé rolovanie
-    # =====================================
 
     def auto_scroll(self, dt):
         if not hasattr(self, "scroll"):
