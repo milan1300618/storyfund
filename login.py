@@ -10,6 +10,7 @@ from kivymd.uix.screen import MDScreen
 
 from backend import login_user
 from firebase_auth import login_admin, login_user_auth
+from balance import update_balance_if_needed
 
 Builder.load_file(os.path.join(os.path.dirname(__file__), "login.kv"))
 
@@ -76,6 +77,13 @@ class LoginScreen(MDScreen):
             return
 
         current_user = nik
+
+        # Aktualizácia zostatku transparentného účtu.
+        # Ak bola aktualizácia pred menej ako hodinou,
+        # požiadavka na UniCredit sa nevykoná.
+        # Ak UniCredit nebude dostupný, prihlásenie aj tak pokračuje.
+        update_balance_if_needed()
+
         self.manager.current = "home"
         return
 
