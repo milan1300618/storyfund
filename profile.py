@@ -89,7 +89,7 @@ class ProfileScreen(MDScreen):
 
 Nick: {nik}
 Registrovaný: {reg}
-Dar uhradený pre aktuálne kolo: NIE
+Blokovany pre aktuálne kolo: NIE
 
 Počet mojich príbehov: {len(mine)}
 Priemerné AI skóre: {avg} %
