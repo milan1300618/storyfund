@@ -276,7 +276,7 @@ class HomeScreen(MDScreen):
         summary.add_widget(
             MDLabel(
                 text=(
-                    f"Fond aktuálneho kola: {stats['fund']:.2f} €\n"
+                    f"Fond aktuálneho kola(pred hodinou): {stats['fund']:.2f} €\n"
                     f"Počet darcov: {stats['donors']}"
                 ),
                 halign="center",
