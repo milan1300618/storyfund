@@ -66,12 +66,10 @@ class ProfileScreen(MDScreen):
             if not isinstance(h, dict):
                 continue
 
-            # Výhercovia sú v databáze uloženÍ pod "winners".
-            # Každé víťazstvo sa počíta samostatne.
-            win_list = h.get("winners", [])
+            receivers = h.get("receivers", [])
 
-            if isinstance(win_list, (list, dict)):
-                winners += len(win_list)
+            if isinstance(receivers, list):
+                winners += len(receivers)
 
             try:
                 total += float(h.get("fund", 0) or 0)
@@ -99,11 +97,11 @@ Najvyššie AI skóre: {best} %
 
 [b]ŠTATISTIKY STORYFUNDU[/b]
 
-Registrovaných darcov: {len(users)}
+Registrovaných používateľov: {len(users)}
 Vytvorených príbehov: {len(stories)}
 Uzavretých kôl: {len(history)}
-Rozdanych darov: {winners}
-Celkovo rozoslane dary: {total:.2f} €'''
+Vyplatených odarov: {winners}
+Celková vyplatená suma: {total:.2f} €'''
 
         root.add_widget(
             MDLabel(
