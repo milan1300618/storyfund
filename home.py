@@ -389,6 +389,6 @@ class HomeScreen(MDScreen):
         if not hasattr(self, "scroll"):
             return
 
-        step = 0.0010
+        step = 0.0005
         y = self.scroll.scroll_y
         self.scroll.scroll_y = 1.0 if y <= 0 else y - step
