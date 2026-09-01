@@ -88,7 +88,7 @@ class ProfileScreen(MDScreen):
         txt = f'''[b]MÔJ PROFIL[/b]
 
 Nick: {nik}
-Registrovaný: {reg}
+Darca registrovaný: {reg}
 Blokovany pre aktuálne kolo: NIE
 
 Počet mojich príbehov: {len(mine)}
@@ -97,11 +97,11 @@ Najvyššie AI skóre: {best} %
 
 [b]ŠTATISTIKY STORYFUNDU[/b]
 
-Registrovaných používateľov: {len(users)}
+Registrovaných darcov: {len(users)}
 Vytvorených príbehov: {len(stories)}
 Uzavretých kôl: {len(history)}
-Vyplatených odarov: {winners}
-Celková vyplatená suma: {total:.2f} €'''
+Podporenych darcov: {winners}
+Celkovo vyzbierane dary: {total:.2f} €'''
 
         root.add_widget(
             MDLabel(
