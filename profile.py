@@ -66,10 +66,10 @@ class ProfileScreen(MDScreen):
             if not isinstance(h, dict):
                 continue
 
-            receivers = h.get("receivers", [])
+            win_list = h.get("winners", [])
 
-            if isinstance(receivers, list):
-                winners += len(receivers)
+            if isinstance(win_list, (list, dict)):
+                winners += len(win_list)
 
             try:
                 total += float(h.get("fund", 0) or 0)
