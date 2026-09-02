@@ -22,7 +22,7 @@ android.permissions = INTERNET,ACCESS_NETWORK_STATE
 android.accept_sdk_license = True
 android.release_artifact = aab
 
-p4a.branch = v2023.09.16
+
 
 [buildozer]
 
