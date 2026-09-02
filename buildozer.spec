@@ -1,8 +1,8 @@
 [app]
 
 title = StoryFund
-package.name = storyfund
-package.domain = org.storyfund
+package.name = myapp
+package.domain = storyfund
 
 source.dir = .
 source.include_exts = py,kv,png,jpg,jpeg,json,txt
