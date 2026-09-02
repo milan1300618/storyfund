@@ -20,6 +20,7 @@ jobs:
             unzip \
             openjdk-17-jdk \
             python3-pip \
+            python3-venv \
             autoconf \
             automake \
             libtool \
@@ -44,10 +45,8 @@ jobs:
       - name: Install Buildozer
         run: |
           python3 -m pip install --upgrade pip
-          python3 -m pip install \
-            buildozer==1.5.0 \
-            Cython==0.29.33 \
-            virtualenv
+          python3 -m pip install git+https://github.com/kivy/buildozer.git
+          python3 -m pip install legacy-cgi setuptools 'cython==0.29.34' virtualenv
 
       - name: Prepare signing key
         env:
