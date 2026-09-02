@@ -1,0 +1,72 @@
+name: Build StoryFund AAB
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install system packages
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            git \
+            zip \
+            unzip \
+            openjdk-17-jdk \
+            python3-pip \
+            autoconf \
+            automake \
+            libtool \
+            pkg-config \
+            gettext \
+            gettext-base \
+            autopoint \
+            zlib1g-dev \
+            libncurses5-dev \
+            libncursesw5-dev \
+            libtinfo5 \
+            cmake \
+            libffi-dev \
+            libssl-dev \
+            wget
+
+      - name: Check autopoint
+        run: |
+          which autopoint
+          autopoint --version
+
+      - name: Install Buildozer
+        run: |
+          python3 -m pip install --upgrade pip
+          python3 -m pip install \
+            buildozer==1.5.0 \
+            Cython==0.29.33 \
+            virtualenv
+
+      - name: Prepare signing key
+        env:
+          KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
+        run: |
+          echo "$KEYSTORE_BASE64" | base64 -d > "$GITHUB_WORKSPACE/storyfund-upload.jks"
+
+      - name: Build AAB
+        env:
+          P4A_RELEASE_KEYSTORE: ${{ github.workspace }}/storyfund-upload.jks
+          P4A_RELEASE_KEYSTORE_PASSWD: ${{ secrets.KEYSTORE_PASSWORD }}
+          P4A_RELEASE_KEYALIAS: ${{ secrets.KEY_ALIAS }}
+          P4A_RELEASE_KEYALIAS_PASSWD: ${{ secrets.KEYSTORE_PASSWORD }}
+        run: |
+          buildozer android release
+
+      - name: Upload AAB
+        uses: actions/upload-artifact@v4
+        with:
+          name: StoryFund-AAB
+          path: bin/*.aab
+          if-no-files-found: error
