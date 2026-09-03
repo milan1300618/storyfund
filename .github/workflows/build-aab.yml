@@ -20,18 +20,20 @@ jobs:
             autoconf automake libtool pkg-config \
             gettext gettext-base autopoint \
             zlib1g-dev libncurses5-dev libncursesw5-dev \
-            libtinfo5 cmake libffi-dev libssl-dev wget
+            libtinfo5 cmake libffi-dev libssl-dev wget \
+            software-properties-common
 
-      - name: Install Python 3.14
+      - name: Install Python 3.11
         run: |
           sudo add-apt-repository ppa:deadsnakes/ppa -y
           sudo apt-get update
-          sudo apt-get install -y python3.14 python3.14-venv
-          python3.14 -m venv .venv
-          . .venv/bin/activate
+          sudo apt-get install -y python3.11 python3.11-venv
+          python3.11 -m venv .venv
+          source .venv/bin/activate
+          python --version
           python -m pip install --upgrade pip
-          python -m pip install git+https://github.com/kivy/buildozer
-          python -m pip install legacy-cgi setuptools cython==0.29.34
+          python -m pip install buildozer==1.5.0
+          python -m pip install Cython==0.29.34 virtualenv setuptools
 
       - name: Prepare signing key
         env:
@@ -46,7 +48,7 @@ jobs:
           P4A_RELEASE_KEYALIAS: ${{ secrets.KEY_ALIAS }}
           P4A_RELEASE_KEYALIAS_PASSWD: ${{ secrets.KEYSTORE_PASSWORD }}
         run: |
-          . .venv/bin/activate
+          source .venv/bin/activate
           buildozer android release
 
       - name: Upload AAB
