@@ -17,13 +17,13 @@ fullscreen = 0
 
 android.api = 36
 android.minapi = 24
-android.ndk = 25b
+android.ndk = 29
 android.ndk_api = 24
 android.permissions = INTERNET,ACCESS_NETWORK_STATE
 android.accept_sdk_license = True
 android.release_artifact = aab
 
-p4a.branch = v2023.09.16
+p4a.branch = develop
 
 [buildozer]
 
