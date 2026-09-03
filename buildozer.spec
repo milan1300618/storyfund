@@ -17,7 +17,7 @@ fullscreen = 0
 
 android.api = 36
 android.minapi = 24
-android.ndk = 29
+android.ndk = 28c
 android.ndk_api = 24
 android.permissions = INTERNET,ACCESS_NETWORK_STATE
 android.accept_sdk_license = True
