@@ -10,7 +10,7 @@ source.include_exts = py,kv,png,jpg,jpeg,json,txt
 version = 0.1
 android.numeric_version = 10242
 
-requirements = python3,kivy==2.3.1,kivymd==1.2.0,requests,certifi,pay-by-square,segno,liblzma,filetype
+requirements = python3,kivy==2.3.1,kivymd==2.0.0,requests,certifi,pay-by-square,segno,liblzma,filetype
 
 orientation = portrait
 fullscreen = 0
