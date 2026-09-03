@@ -11,7 +11,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Install system packages
+      - name: Install dependencies
         run: |
           sudo apt-get update
           sudo apt-get install -y \
@@ -20,20 +20,13 @@ jobs:
             autoconf automake libtool pkg-config \
             gettext gettext-base autopoint \
             zlib1g-dev libncurses5-dev libncursesw5-dev \
-            libtinfo5 cmake libffi-dev libssl-dev wget \
-            software-properties-common
+            libtinfo5 cmake libffi-dev libssl-dev wget
 
-      - name: Install Python 3.11
+      - name: Install Buildozer
         run: |
-          sudo add-apt-repository ppa:deadsnakes/ppa -y
-          sudo apt-get update
-          sudo apt-get install -y python3.11 python3.11-venv
-          python3.11 -m venv .venv
-          source .venv/bin/activate
-          python --version
-          python -m pip install --upgrade pip
-          python -m pip install buildozer==1.5.0
-          python -m pip install Cython==0.29.34 virtualenv setuptools
+          python3 -m pip install --upgrade pip
+          python3 -m pip install git+https://github.com/kivy/buildozer
+          python3 -m pip install "cython<3.4"
 
       - name: Prepare signing key
         env:
@@ -48,7 +41,6 @@ jobs:
           P4A_RELEASE_KEYALIAS: ${{ secrets.KEY_ALIAS }}
           P4A_RELEASE_KEYALIAS_PASSWD: ${{ secrets.KEYSTORE_PASSWORD }}
         run: |
-          source .venv/bin/activate
           buildozer android release
 
       - name: Upload AAB
