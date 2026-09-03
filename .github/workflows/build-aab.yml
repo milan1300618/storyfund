@@ -15,33 +15,23 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y \
-            git \
-            zip \
-            unzip \
-            openjdk-17-jdk \
-            python3-pip \
-            python3-venv \
-            autoconf \
-            automake \
-            libtool \
-            pkg-config \
-            gettext \
-            gettext-base \
-            autopoint \
-            zlib1g-dev \
-            libncurses5-dev \
-            libncursesw5-dev \
-            libtinfo5 \
-            cmake \
-            libffi-dev \
-            libssl-dev \
-            wget
+            git zip unzip openjdk-17-jdk \
+            python3-pip python3-venv \
+            autoconf automake libtool pkg-config \
+            gettext gettext-base autopoint \
+            zlib1g-dev libncurses5-dev libncursesw5-dev \
+            libtinfo5 cmake libffi-dev libssl-dev wget
 
-      - name: Install current Buildozer toolchain
+      - name: Install Python 3.14
         run: |
-          python3 -m pip install --upgrade pip
-          python3 -m pip install git+https://github.com/kivy/buildozer
-          python3 -m pip install legacy-cgi setuptools cython==0.29.34 virtualenv
+          sudo add-apt-repository ppa:deadsnakes/ppa -y
+          sudo apt-get update
+          sudo apt-get install -y python3.14 python3.14-venv
+          python3.14 -m venv .venv
+          . .venv/bin/activate
+          python -m pip install --upgrade pip
+          python -m pip install git+https://github.com/kivy/buildozer
+          python -m pip install legacy-cgi setuptools cython==0.29.34
 
       - name: Prepare signing key
         env:
@@ -56,6 +46,7 @@ jobs:
           P4A_RELEASE_KEYALIAS: ${{ secrets.KEY_ALIAS }}
           P4A_RELEASE_KEYALIAS_PASSWD: ${{ secrets.KEYSTORE_PASSWORD }}
         run: |
+          . .venv/bin/activate
           buildozer android release
 
       - name: Upload AAB
