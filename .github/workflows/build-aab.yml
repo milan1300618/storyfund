@@ -33,6 +33,7 @@ jobs:
           python3 -m pip install --upgrade pip
           python3 -m pip install git+https://github.com/kivy/buildozer
           python3 -m pip install "cython<3.4"
+          python3 -m pip install materialyoucolor
 
       - name: Prepare signing key
         env:
