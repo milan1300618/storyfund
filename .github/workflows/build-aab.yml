@@ -33,7 +33,7 @@ jobs:
           python3 -m pip install --upgrade pip
           python3 -m pip install git+https://github.com/kivy/buildozer
           python3 -m pip install "cython<3.4"
-          python3 -m pip install materialyoucolor
+          python3 -m pip install "materialyoucolor==3.0.3"
 
       - name: Prepare signing key
         env:
@@ -48,6 +48,7 @@ jobs:
           P4A_RELEASE_KEYALIAS: ${{ secrets.KEY_ALIAS }}
           P4A_RELEASE_KEYALIAS_PASSWD: ${{ secrets.KEYSTORE_PASSWORD }}
         run: |
+          buildozer android clean
           buildozer android release
 
       - name: Upload AAB
