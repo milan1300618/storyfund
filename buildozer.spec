@@ -8,7 +8,7 @@ source.dir = .
 source.include_exts = py,kv,png,jpg,jpeg,json,txt
 
 version = 0.1
-android.numeric_version = 10244
+android.numeric_version = 10245
 
 requirements = python3,kivy==2.3.1,kivymd==2.0.0,materialyoucolor,requests,certifi,pay-by-square,segno,liblzma,filetype
 
