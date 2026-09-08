@@ -6,7 +6,7 @@
 from kivymd.uix.screen import MDScreen
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.label import MDLabel
-from kivymd.uix.button import MDRaisedButton
+from kivymd.uix.button import MDButton, MDButtonText
 from kivy.metrics import dp
 
 from login import get_current_user
@@ -111,7 +111,9 @@ Celkovo vyzbierane dary: {total:.2f} €'''
             )
         )
 
-        back = MDRaisedButton(text="SPÄŤ")
+        back = MDButton(
+            MDButtonText(text="SPÄŤ")
+        )
         back.bind(on_release=self.back)
         root.add_widget(back)
 
