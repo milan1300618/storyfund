@@ -94,10 +94,12 @@
             adaptive_height: True
             spacing: "10dp"
 
-            MDRaisedButton:
-                text: "ULOŽIŤ"
+            MDButton:
+                MDButtonText:
+                    text: "ULOŽIŤ"
                 on_release: root.save_settings()
 
-            MDRaisedButton:
-                text: "SPÄŤ"
+            MDButton:
+                MDButtonText:
+                    text: "SPÄŤ"
                 on_release: root.back()
