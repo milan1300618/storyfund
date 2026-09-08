@@ -1,73 +1,31 @@
-name: Build StoryFund AAB
+app]
 
-on:
-  workflow_dispatch:
+title = StoryFund
+package.name = myapp
+package.domain = storyfund
 
-jobs:
-  build:
-    runs-on: ubuntu-22.04
+source.dir = .
+source.include_exts = py,kv,png,jpg,jpeg,json,txt
 
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Install dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y \
-            git zip unzip openjdk-17-jdk \
-            python3-pip python3-venv \
-            autoconf automake libtool pkg-config \
-            gettext gettext-base autopoint \
-            zlib1g-dev libncurses5-dev libncursesw5-dev \
-            libtinfo5 cmake libffi-dev libssl-dev wget
-
-      - name: Use Java 17
-        run: |
-          echo "JAVA_HOME=/usr/lib/jvm/temurin-17-jdk-amd64" >> "$GITHUB_ENV"
-          echo "/usr/lib/jvm/temurin-17-jdk-amd64/bin" >> "$GITHUB_PATH"
-          java -version
-
-      - name: Install Buildozer
-        run: |
-          python3 -m pip install --upgrade pip
-          python3 -m pip install git+https://github.com/kivy/buildozer
-          python3 -m pip install "cython<3.4"
-          python3 -m pip install "materialyoucolor==3.0.3"
-
-      - name: Prepare signing key
-        env:
-          KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
-        run: |
-          echo "$KEYSTORE_BASE64" | base64 -d > "$GITHUB_WORKSPACE/storyfund-upload.jks"
-
-      - name: Build AAB
-        env:
-          P4A_RELEASE_KEYSTORE: ${{ github.workspace }}/storyfund-upload.jks
-          P4A_RELEASE_KEYSTORE_PASSWD: ${{ secrets.KEYSTORE_PASSWORD }}
-          P4A_RELEASE_KEYALIAS: ${{ secrets.KEY_ALIAS }}
-          P4A_RELEASE_KEYALIAS_PASSWD: ${{ secrets.KEYSTORE_PASSWORD }}
-        run: |
-          rm -rf .buildozer
-          buildozer android release
-
-      - name: Upload AAB
-        uses: actions/upload-artifact@v4
-        with:
-          name: StoryFund-AAB
-          path: bin/*.aab
-          if-no-files-found: error
-
-A v "buildozer.spec" zmeň iba:
-
-materialyoucolor
-
-na:
-
-materialyoucolor==3.0.3
-
-Teda celý "requirements" riadok má byť:
+version = 0.1
+android.numeric_version = 10245
 
 requirements = python3,kivy==2.3.1,kivymd==2.0.0,materialyoucolor==3.0.3,requests,certifi,pay-by-square,segno,liblzma,filetype
 
-Potom spusti workflow. Zatiaľ už nič ďalšie nemeníme.
+orientation = portrait
+fullscreen = 0
+
+android.api = 36
+android.minapi = 24
+android.ndk = 28c
+android.ndk_api = 24
+android.permissions = INTERNET,ACCESS_NETWORK_STATE
+android.accept_sdk_license = True
+android.release_artifact = aab
+
+p4a.branch = develop
+
+[buildozer]
+
+log_level = 2
+warn_on_root = 0
