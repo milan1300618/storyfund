@@ -3,7 +3,7 @@ import os
 from kivy.lang import Builder
 from kivymd.uix.screen import MDScreen
 from kivymd.uix.dialog import MDDialog
-from kivymd.uix.button import MDFlatButton
+from kivymd.uix.button import MDButton, MDButtonText
 from kivymd.uix.textfield import MDTextField
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.textinput import TextInput
@@ -40,14 +40,8 @@ class AdminScreen(MDScreen):
 
         try:
 
-            # Uzavrie kolo:
-            # - vyžrebuje výhercov
-            # - uloží ich do Firebase
-            # - vyčistí stories
-            # - otvorí nové kolo
             force_new_cycle()
 
-            # Načítame aktuálny archív
             archive = get_archive()
 
             winners = []
@@ -61,7 +55,6 @@ class AdminScreen(MDScreen):
                     []
                 )
 
-            # Ochrana proti prípadnému neplatnému formátu
             if not isinstance(winners, list):
                 winners = []
 
@@ -102,7 +95,6 @@ class AdminScreen(MDScreen):
 
         winners_text = "\n".join(winners)
 
-        # Textové pole so zoznamom
         winners_field = TextInput(
             text=winners_text,
             multiline=True,
@@ -128,15 +120,15 @@ class AdminScreen(MDScreen):
             type="custom",
             content_cls=content,
             buttons=[
-                MDFlatButton(
-                    text="KOPÍROVAŤ ZOZNAM",
+                MDButton(
+                    MDButtonText(text="KOPÍROVAŤ ZOZNAM"),
                     on_release=lambda x: self.copy_winners(
                         winners_text,
                         dialog
                     )
                 ),
-                MDFlatButton(
-                    text="ZAVRIEŤ",
+                MDButton(
+                    MDButtonText(text="ZAVRIEŤ"),
                     on_release=lambda x: dialog.dismiss()
                 ),
             ],
@@ -196,12 +188,12 @@ class AdminScreen(MDScreen):
             type="custom",
             content_cls=content,
             buttons=[
-                MDFlatButton(
-                    text="ZRUŠIŤ",
+                MDButton(
+                    MDButtonText(text="ZRUŠIŤ"),
                     on_release=lambda x: dialog.dismiss()
                 ),
-                MDFlatButton(
-                    text="ULOŽIŤ",
+                MDButton(
+                    MDButtonText(text="ULOŽIŤ"),
                     on_release=lambda x: self._save_previous_cycle(
                         amount_field.text,
                         recipients_field.text,
