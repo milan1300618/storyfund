@@ -29,16 +29,19 @@
 
         Widget:
 
-        MDRaisedButton:
+        MDButton:
             id: block_btn
-            text: "ðŸš« Blokovaný"
+            MDButtonText:
+                text: "🚫 Blokovaný"
             on_release: root.block_user()
 
-        MDRaisedButton:
+        MDButton:
             id: unblock_btn
-            text: "ðŸ”“ Odblokovaný"
+            MDButtonText:
+                text: "🔓 Odblokovaný"
             on_release: root.unblock_user()
 
-        MDRaisedButton:
-            text: "â¬… SpÃ¤Å¥"
+        MDButton:
+            MDButtonText:
+                text: "⬅ Späť"
             on_release: root.back()
