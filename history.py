@@ -1,7 +1,11 @@
 import os
 from kivy.lang import Builder
 from kivymd.uix.screen import MDScreen
-from kivymd.uix.list import TwoLineListItem
+from kivymd.uix.list import (
+    MDListItem,
+    MDListItemHeadlineText,
+    MDListItemSupportingText,
+)
 
 from database import get_archive
 
@@ -41,12 +45,16 @@ class HistoryScreen(MDScreen):
             else:
                 per_person_text = "—"
 
-            item = TwoLineListItem(
-                text="Minulé kolo",
-                secondary_text=(
-                    f"Vyzbierané: {fund:.2f} €   |   "
-                    f"Ľudí: {people}   |   "
-                    f"Po: {per_person_text}"
+            item = MDListItem(
+                MDListItemHeadlineText(
+                    text="Minulé kolo"
+                ),
+                MDListItemSupportingText(
+                    text=(
+                        f"Vyzbierané: {fund:.2f} €   |   "
+                        f"Ľudí: {people}   |   "
+                        f"Po: {per_person_text}"
+                    )
                 )
             )
 
