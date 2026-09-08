@@ -9,7 +9,7 @@ from kivymd.uix.screen import MDScreen
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.gridlayout import MDGridLayout
 from kivymd.uix.label import MDLabel
-from kivymd.uix.button import MDRaisedButton
+from kivymd.uix.button import MDButton, MDButtonText
 
 from kivy.metrics import dp
 
@@ -73,8 +73,8 @@ class CreateStoryScreen(MDScreen):
 
             root.add_widget(info)
 
-            back = MDRaisedButton(
-                text="SPÄŤ"
+            back = MDButton(
+                MDButtonText(text="SPÄŤ")
             )
 
             back.bind(
@@ -105,8 +105,8 @@ class CreateStoryScreen(MDScreen):
 
         for word in self.words:
 
-            btn = MDRaisedButton(
-                text=word,
+            btn = MDButton(
+                MDButtonText(text=word),
                 size_hint=(1, None),
                 height=dp(34)
             )
@@ -119,8 +119,8 @@ class CreateStoryScreen(MDScreen):
 
         root.add_widget(self.word_box)
 
-        self.generate_btn = MDRaisedButton(
-            text="GENEROVAŤ PRÍBEH",
+        self.generate_btn = MDButton(
+            MDButtonText(text="GENEROVAŤ PRÍBEH"),
             disabled=True
         )
 
@@ -137,8 +137,8 @@ class CreateStoryScreen(MDScreen):
 
         root.add_widget(self.story_label)
 
-        self.save_btn = MDRaisedButton(
-            text="ULOŽIŤ",
+        self.save_btn = MDButton(
+            MDButtonText(text="ULOŽIŤ"),
             disabled=True
         )
 
@@ -148,8 +148,8 @@ class CreateStoryScreen(MDScreen):
 
         root.add_widget(self.save_btn)
 
-        back = MDRaisedButton(
-            text="SPÄŤ"
+        back = MDButton(
+            MDButtonText(text="SPÄŤ")
         )
 
         back.bind(
@@ -163,123 +163,10 @@ class CreateStoryScreen(MDScreen):
 
     def select_word(self, button):
 
-        word = button.text
+        word = button.children[0].text
 
         if word in self.selected:
 
             self.selected.remove(word)
 
-            button.md_bg_color = self.theme_cls.primary_color
-
-        else:
-
-            if len(self.selected) >= get("WORDS_TO_SELECT"):
-
-                return
-
-            self.selected.append(word)
-
-            button.md_bg_color = (0, 0.7, 0.2, 1)
-
-        self.info.text = (
-            f"Vybrané: {len(self.selected)} / {get('WORDS_TO_SELECT')}"
-        )
-
-        self.generate_btn.disabled = (
-            len(self.selected) != get("WORDS_TO_SELECT")
-        )
-
-
-    def generate(self, button):
-
-        if len(self.selected) != get("WORDS_TO_SELECT"):
-
-            return
-
-        if self.attempts >= get("MAX_GENERATIONS"):
-
-            return
-
-        self.attempts += 1
-
-        self.story = generate_story(
-            self.selected
-        )
-
-        self.score = random.randint(
-            get("MIN_AI_SCORE"),
-            get("MAX_AI_SCORE")
-        )
-
-        text = self.story
-
-        if get("SHOW_AI_SCORE"):
-
-            text += (
-                f"\n\n AI index: {self.score}%"
-            )
-
-        self.story_label.text = text
-
-        self.save_btn.disabled = False
-
-        if self.attempts >= get("MAX_GENERATIONS"):
-
-            self.generate_btn.disabled = True
-
-        else:
-
-            zostava = (
-                get("MAX_GENERATIONS")
-                - self.attempts
-            )
-
-            self.generate_btn.text = (
-                f"GENEROVAŤ ZNOVA ({zostava})"
-            )
-    def save(self, button):
-
-        nik = get_current_user()
-
-        if self.story == "":
-
-            self.story_label.text = (
-                "Najprv vygeneruj príbeh."
-            )
-
-            return
-
-        if (not get("TEST_MODE")) and (not can_add_story(nik)):
-
-            self.story_label.text = (
-                "V tomto kole už máš vytvorené maximálny počet príbehov."
-            )
-
-            return
-
-        if not get("TEST_MODE"):
-            if not check_payment(nik):
-                self.story_label.text = (
-                    "Neregistruje sa dar (2€) na účte s týmto nickom za aktuálne kolo."
-                )
-                return
-
-        save_story(
-            nik,
-            self.selected,
-            self.story,
-            self.score
-        )
-
-        text = " Príbeh bol uložený."
-
-
-        self.story_label.text = text
-
-        self.save_btn.disabled = True
-        self.generate_btn.disabled = True
-
-
-    def back(self, button):
-
-        self.manager.current = "home"
+            button.theme
