@@ -12,32 +12,39 @@
             bold: True
             font_style: "H5"
 
-        MDRaisedButton:
-            text: "Používatelia"
+        MDButton:
+            MDButtonText:
+                text: "Používatelia"
             on_release: root.show_users()
 
-        MDRaisedButton:
-            text: "➕ Nový používateľ"
+        MDButton:
+            MDButtonText:
+                text: "➕ Nový používateľ"
             on_release: root.create_user()
 
-        MDRaisedButton:
-            text: "Nastavenia"
+        MDButton:
+            MDButtonText:
+                text: "Nastavenia"
             on_release: root.settings()
 
-        MDRaisedButton:
-            text: "Uzavrieť kolo"
+        MDButton:
+            MDButtonText:
+                text: "Uzavrieť kolo"
             on_release: root.close_cycle()
 
-        MDRaisedButton:
-            text: "Minulé kolo"
+        MDButton:
+            MDButtonText:
+                text: "Minulé kolo"
             on_release: root.previous_cycle()
 
-        MDRaisedButton:
-            text: "História"
+        MDButton:
+            MDButtonText:
+                text: "História"
             on_release: root.history()
 
         Widget:
 
-        MDRaisedButton:
-            text: "Odhlásiť"
+        MDButton:
+            MDButtonText:
+                text: "Odhlásiť"
             on_release: root.logout()
