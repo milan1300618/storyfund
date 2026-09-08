@@ -9,7 +9,7 @@ import webbrowser
 from kivymd.uix.screen import MDScreen
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.label import MDLabel
-from kivymd.uix.button import MDRaisedButton
+from kivymd.uix.button import MDButton, MDButtonText
 from kivymd.uix.scrollview import MDScrollView
 from kivymd.uix.card import MDCard
 
@@ -52,8 +52,6 @@ class HomeScreen(MDScreen):
         fund = get_fund()
         archive = get_archive()
 
-        # Pocet darcov = pocet unikatnych NIKov,
-        # ktore maju v aktualnom kole ulozeny pribeh.
         stories = get_stories()
         donors = len({
             str(s.get("nik", "")).strip()
@@ -130,22 +128,22 @@ class HomeScreen(MDScreen):
             height=dp(48)
         )
 
-        new_story_btn = MDRaisedButton(
-            text="NOVÝ PRÍBEH",
+        new_story_btn = MDButton(
+            MDButtonText(text="NOVÝ PRÍBEH"),
             size_hint_x=1
         )
         new_story_btn.bind(on_release=self.create_story)
         buttons.add_widget(new_story_btn)
 
-        profile_btn = MDRaisedButton(
-            text="PROFIL",
+        profile_btn = MDButton(
+            MDButtonText(text="PROFIL"),
             size_hint_x=1
         )
         profile_btn.bind(on_release=self.profile)
         buttons.add_widget(profile_btn)
 
-        logout_btn = MDRaisedButton(
-            text="ODHLÁSIŤ",
+        logout_btn = MDButton(
+            MDButtonText(text="ODHLÁSIŤ"),
             size_hint_x=1
         )
         logout_btn.bind(on_release=self.logout)
@@ -158,8 +156,8 @@ class HomeScreen(MDScreen):
             height=dp(42)
         )
 
-        account_btn = MDRaisedButton(
-            text=" TRANSPARENTNÝ ÚČET",
+        account_btn = MDButton(
+            MDButtonText(text=" TRANSPARENTNÝ ÚČET"),
             size_hint=(1, 1)
         )
         account_btn.bind(on_release=self.open_account)
@@ -356,39 +354,19 @@ class HomeScreen(MDScreen):
 
         except Exception as e:
             from kivymd.uix.dialog import MDDialog
-            from kivymd.uix.button import MDFlatButton
+            from kivymd.uix.button import MDButton, MDButtonText
 
             dialog = MDDialog(
                 title="QR chyba",
                 text=f"{type(e).__name__}: {e}",
-                buttons=[MDFlatButton(text="OK")]
+                buttons=[
+                    MDButton(
+                        MDButtonText(text="OK")
+                    )
+                ]
             )
 
             dialog.buttons[0].bind(on_release=dialog.dismiss)
             dialog.open()
 
-    def get_app_qr_directory(self):
-        from kivy.app import App
-        directory = App.get_running_app().user_data_dir
-        os.makedirs(directory, exist_ok=True)
-        return directory
-
-    def open_account(self, *args):
-        webbrowser.open(TRANSPARENT_ACCOUNT)
-
-    def create_story(self, *args):
-        self.manager.current = "create_story"
-
-    def profile(self, *args):
-        self.manager.current = "profile"
-
-    def logout(self, *args):
-        self.manager.current = "login"
-
-    def auto_scroll(self, dt):
-        if not hasattr(self, "scroll"):
-            return
-
-        step = 0.0005
-        y = self.scroll.scroll_y
-        self.scroll.scroll_y = 1.0 if y <= 0 else y - step
+   
