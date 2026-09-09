@@ -12,6 +12,12 @@ from kivymd.uix.label import MDLabel
 from kivymd.uix.button import MDButton, MDButtonText
 from kivymd.uix.scrollview import MDScrollView
 from kivymd.uix.card import MDCard
+from kivymd.uix.dialog import (
+    MDDialog,
+    MDDialogHeadlineText,
+    MDDialogSupportingText,
+    MDDialogButtonContainer,
+)
 
 from kivy.uix.image import Image
 from kivy.uix.relativelayout import RelativeLayout
@@ -353,20 +359,21 @@ class HomeScreen(MDScreen):
             modal.open()
 
         except Exception as e:
-            from kivymd.uix.dialog import MDDialog
-            from kivymd.uix.button import MDButton, MDButtonText
-
-            dialog = MDDialog(
-                title="QR chyba",
-                text=f"{type(e).__name__}: {e}",
-                buttons=[
-                    MDButton(
-                        MDButtonText(text="OK")
-                    )
-                ]
+            ok_button = MDButton(
+                MDButtonText(text="OK")
             )
 
-            dialog.buttons[0].bind(on_release=dialog.dismiss)
-            dialog.open()
+            dialog = MDDialog(
+                MDDialogHeadlineText(
+                    text="QR chyba"
+                ),
+                MDDialogSupportingText(
+                    text=f"{type(e).__name__}: {e}"
+                ),
+                MDDialogButtonContainer(
+                    ok_button
+                ),
+            )
 
-   
+            ok_button.bind(on_release=dialog.dismiss)
+            dialog.open()
