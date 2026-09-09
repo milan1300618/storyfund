@@ -7,10 +7,10 @@ package.domain = storyfund
 source.dir = .
 source.include_exts = py,kv,png,jpg,jpeg,json,txt
 
-version = 0.1.1
-android.numeric_version = 10247
+version = 0.1.2
+android.numeric_version = 10248
 
-requirements = python3,kivy==2.3.1,kivymd==2.0.0,materialyoucolor==3.0.3,requests,certifi,pay-by-square,segno,liblzma,filetype
+requirements = python3,kivy==2.3.1,kivymd==2.0.0,materialyoucolor==3.0.4,requests,certifi,pay-by-square,segno,liblzma,filetype
 
 orientation = portrait
 fullscreen = 0
