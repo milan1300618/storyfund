@@ -2,11 +2,18 @@ import os
 
 from kivy.lang import Builder
 from kivymd.uix.screen import MDScreen
-from kivymd.uix.dialog import MDDialog
+from kivymd.uix.dialog import (
+    MDDialog,
+    MDDialogHeadlineText,
+    MDDialogSupportingText,
+    MDDialogContentContainer,
+    MDDialogButtonContainer,
+)
 from kivymd.uix.button import MDButton, MDButtonText
 from kivymd.uix.textfield import MDTextField, MDTextFieldHintText
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.textinput import TextInput
+from kivy.uix.widget import Widget
 from kivy.core.clipboard import Clipboard
 
 from backend import list_users, create_user
@@ -31,6 +38,27 @@ class AdminScreen(MDScreen):
 
     def settings(self):
         self.manager.current = "settings"
+
+    def _show_message(self, title, text):
+        ok_button = MDButton(
+            MDButtonText(text="OK"),
+            style="text"
+        )
+
+        dialog = MDDialog(
+            MDDialogHeadlineText(text=title),
+            MDDialogSupportingText(text=text),
+            MDDialogButtonContainer(
+                Widget(),
+                ok_button,
+            ),
+        )
+
+        ok_button.bind(
+            on_release=lambda *args: dialog.dismiss()
+        )
+
+        dialog.open()
 
     # =====================================
     # UZAVRETIE KOLA
@@ -70,22 +98,22 @@ class AdminScreen(MDScreen):
 
             else:
 
-                MDDialog(
-                    title="Kolo uzavreté",
-                    text=(
+                self._show_message(
+                    "Kolo uzavreté",
+                    (
                         "Kolo bolo úspešne uzavreté "
                         "a otvorilo sa nové kolo.\n\n"
                         "V tomto kole neboli vyžrebovaní "
                         "žiadni výhercovia."
                     )
-                ).open()
+                )
 
         except Exception as e:
 
-            MDDialog(
-                title="Chyba pri uzatváraní kola",
-                text=str(e)
-            ).open()
+            self._show_message(
+                "Chyba pri uzatváraní kola",
+                str(e)
+            )
 
     # =====================================
     # ZOBRAZENIE VÝHERCOV
@@ -115,23 +143,41 @@ class AdminScreen(MDScreen):
 
         content.add_widget(winners_field)
 
+        copy_button = MDButton(
+            MDButtonText(text="KOPÍROVAŤ ZOZNAM"),
+            style="text"
+        )
+
+        close_button = MDButton(
+            MDButtonText(text="ZAVRIEŤ"),
+            style="text"
+        )
+
         dialog = MDDialog(
-            title=f"VÝHERCI ({len(winners)})",
-            type="custom",
-            content_cls=content,
-            buttons=[
-                MDButton(
-                    MDButtonText(text="KOPÍROVAŤ ZOZNAM"),
-                    on_release=lambda x: self.copy_winners(
-                        winners_text,
-                        dialog
-                    )
-                ),
-                MDButton(
-                    MDButtonText(text="ZAVRIEŤ"),
-                    on_release=lambda x: dialog.dismiss()
-                ),
-            ],
+            MDDialogHeadlineText(
+                text=f"VÝHERCI ({len(winners)})"
+            ),
+            MDDialogContentContainer(
+                content,
+                orientation="vertical"
+            ),
+            MDDialogButtonContainer(
+                Widget(),
+                copy_button,
+                close_button,
+                spacing="8dp"
+            ),
+        )
+
+        copy_button.bind(
+            on_release=lambda *args: self.copy_winners(
+                winners_text,
+                dialog
+            )
+        )
+
+        close_button.bind(
+            on_release=lambda *args: dialog.dismiss()
         )
 
         dialog.open()
@@ -146,13 +192,13 @@ class AdminScreen(MDScreen):
 
         dialog.dismiss()
 
-        MDDialog(
-            title="Skopírované",
-            text=(
+        self._show_message(
+            "Skopírované",
+            (
                 "Zoznam výhercov bol skopírovaný "
                 "do schránky."
             )
-        ).open()
+        )
 
     # =====================================
     # MINULÉ KOLO
@@ -193,24 +239,40 @@ class AdminScreen(MDScreen):
         content.add_widget(amount_field)
         content.add_widget(recipients_field)
 
+        cancel_button = MDButton(
+            MDButtonText(text="ZRUŠIŤ"),
+            style="text"
+        )
+
+        save_button = MDButton(
+            MDButtonText(text="ULOŽIŤ"),
+            style="text"
+        )
+
         dialog = MDDialog(
-            title="Minulé kolo",
-            type="custom",
-            content_cls=content,
-            buttons=[
-                MDButton(
-                    MDButtonText(text="ZRUŠIŤ"),
-                    on_release=lambda x: dialog.dismiss()
-                ),
-                MDButton(
-                    MDButtonText(text="ULOŽIŤ"),
-                    on_release=lambda x: self._save_previous_cycle(
-                        amount_field.text,
-                        recipients_field.text,
-                        dialog
-                    )
-                ),
-            ],
+            MDDialogHeadlineText(text="Minulé kolo"),
+            MDDialogContentContainer(
+                content,
+                orientation="vertical"
+            ),
+            MDDialogButtonContainer(
+                Widget(),
+                cancel_button,
+                save_button,
+                spacing="8dp"
+            ),
+        )
+
+        cancel_button.bind(
+            on_release=lambda *args: dialog.dismiss()
+        )
+
+        save_button.bind(
+            on_release=lambda *args: self._save_previous_cycle(
+                amount_field.text,
+                recipients_field.text,
+                dialog
+            )
         )
 
         dialog.open()
@@ -243,9 +305,9 @@ class AdminScreen(MDScreen):
 
             dialog.dismiss()
 
-            MDDialog(
-                title="Minulé kolo uložené",
-                text=(
+            self._show_message(
+                "Minulé kolo uložené",
+                (
                     f"Vyzbierané: "
                     f"{float(amount_text.replace(',', '.')):.2f} €\n"
                     f"Príjemcov: "
@@ -253,14 +315,14 @@ class AdminScreen(MDScreen):
                     f"Na jedného: "
                     f"{per_person:.2f} €"
                 )
-            ).open()
+            )
 
         except Exception as e:
 
-            MDDialog(
-                title="Chyba",
-                text=str(e)
-            ).open()
+            self._show_message(
+                "Chyba",
+                str(e)
+            )
 
     # =====================================
     # HISTÓRIA
