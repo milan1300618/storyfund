@@ -4,7 +4,7 @@ from kivy.lang import Builder
 from kivymd.uix.screen import MDScreen
 from kivymd.uix.dialog import MDDialog
 from kivymd.uix.button import MDButton, MDButtonText
-from kivymd.uix.textfield import MDTextField
+from kivymd.uix.textfield import MDTextField, MDTextFieldHintText
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.textinput import TextInput
 from kivy.core.clipboard import Clipboard
@@ -161,15 +161,25 @@ class AdminScreen(MDScreen):
     def previous_cycle(self):
 
         amount_field = MDTextField(
-            hint_text="Vyzbieraná suma (€)",
             input_filter="float",
-            mode="rectangle"
+            mode="outlined"
+        )
+
+        amount_field.add_widget(
+            MDTextFieldHintText(
+                text="Vyzbieraná suma (€)"
+            )
         )
 
         recipients_field = MDTextField(
-            hint_text="Počet príjemcov",
             input_filter="int",
-            mode="rectangle"
+            mode="outlined"
+        )
+
+        recipients_field.add_widget(
+            MDTextFieldHintText(
+                text="Počet príjemcov"
+            )
         )
 
         content = BoxLayout(
