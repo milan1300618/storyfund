@@ -169,4 +169,123 @@ class CreateStoryScreen(MDScreen):
 
             self.selected.remove(word)
 
-            button.theme
+            button.theme_bg_color = "Primary"
+
+        else:
+
+            if len(self.selected) >= get("WORDS_TO_SELECT"):
+
+                return
+
+            self.selected.append(word)
+
+            button.theme_bg_color = "Custom"
+            button.md_bg_color = (0, 0.7, 0.2, 1)
+
+        self.info.text = (
+            f"Vybrané: {len(self.selected)} / {get('WORDS_TO_SELECT')}"
+        )
+
+        self.generate_btn.disabled = (
+            len(self.selected) != get("WORDS_TO_SELECT")
+        )
+
+
+    def generate(self, button):
+
+        if len(self.selected) != get("WORDS_TO_SELECT"):
+
+            return
+
+        if self.attempts >= get("MAX_GENERATIONS"):
+
+            return
+
+        self.attempts += 1
+
+        self.story = generate_story(
+            self.selected
+        )
+
+        self.score = random.randint(
+            get("MIN_AI_SCORE"),
+            get("MAX_AI_SCORE")
+        )
+
+        text = self.story
+
+        if get("SHOW_AI_SCORE"):
+
+            text += (
+                f"\n\n AI index: {self.score}%"
+            )
+
+        self.story_label.text = text
+
+        self.save_btn.disabled = False
+
+        if self.attempts >= get("MAX_GENERATIONS"):
+
+            self.generate_btn.disabled = True
+
+        else:
+
+            zostava = (
+                get("MAX_GENERATIONS")
+                - self.attempts
+            )
+
+            self.generate_btn.children[0].text = (
+                f"GENEROVAŤ ZNOVA ({zostava})"
+            )
+
+
+    def save(self, button):
+
+        nik = get_current_user()
+
+        if self.story == "":
+
+            self.story_label.text = (
+                "Najprv vygeneruj príbeh."
+            )
+
+            return
+
+        if (not get("TEST_MODE")) and (not can_add_story(nik)):
+
+            self.story_label.text = (
+                "V tomto kole už máš vytvorené maximálny počet príbehov."
+            )
+
+            return
+
+        if not get("TEST_MODE"):
+
+            if not check_payment(nik):
+
+                self.story_label.text = (
+                    "Neregistruje sa dar (2€) na účte s týmto nickom za "
+                    "aktuálne kolo."
+                )
+
+                return
+
+        save_story(
+            nik,
+            self.selected,
+            self.story,
+            self.score
+        )
+
+        text = " Príbeh bol uložený."
+
+        self.story_label.text = text
+
+        self.save_btn.disabled = True
+        self.generate_btn.disabled = True
+
+
+    def back(self, button):
+
+        self.manager.current = "home"
