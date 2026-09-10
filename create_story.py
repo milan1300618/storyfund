@@ -114,8 +114,6 @@ class CreateStoryScreen(MDScreen):
                 on_release=self.select_word
             )
 
-            btn._storyfund_selected = False
-
             self.word_box.add_widget(btn)
 
         root.add_widget(self.word_box)
@@ -170,7 +168,7 @@ class CreateStoryScreen(MDScreen):
 
             self.selected.remove(word)
 
-            button._storyfund_selected = False
+            button.theme_bg_color = "Primary"
 
         else:
 
@@ -180,7 +178,8 @@ class CreateStoryScreen(MDScreen):
 
             self.selected.append(word)
 
-            button._storyfund_selected = True
+            button.theme_bg_color = "Custom"
+            button.md_bg_color = (0, 0.7, 0.2, 1)
 
         self.info.text = (
             f"Vybrané: {len(self.selected)} / {get('WORDS_TO_SELECT')}"
