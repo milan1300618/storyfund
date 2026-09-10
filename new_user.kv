@@ -28,16 +28,16 @@
         Widget:
 
         MDButton:
+            on_release: root.generate_new()
             MDButtonText:
                 text: "Generovať znova"
-            on_release: root.generate_new()
 
         MDButton:
+            on_release: root.save_user()
             MDButtonText:
                 text: "Vytvoriť darcu"
-            on_release: root.save_user()
 
         MDButton:
+            on_release: root.cancel()
             MDButtonText:
                 text: "Zrušiť"
-            on_release: root.cancel()
