@@ -25,23 +25,23 @@
 
         MDLabel:
             id: stories_label
-            text: "Príbehy v kole:"
+            text: "PrÃ­behy v kole:"
 
         Widget:
 
         MDButton:
             id: block_btn
-            MDButtonText:
-                text: "🚫 Blokovaný"
             on_release: root.block_user()
+            MDButtonText:
+                text: "ðŸš« BlokovanÃ½"
 
         MDButton:
             id: unblock_btn
-            MDButtonText:
-                text: "🔓 Odblokovaný"
             on_release: root.unblock_user()
+            MDButtonText:
+                text: "ðŸ”“ OdblokovanÃ½"
 
         MDButton:
-            MDButtonText:
-                text: "⬅ Späť"
             on_release: root.back()
+            MDButtonText:
+                text: "â¬… SpÃ¤Å¥"
