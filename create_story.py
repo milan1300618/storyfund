@@ -57,7 +57,6 @@ class CreateStoryScreen(MDScreen):
         title = MDLabel(
             text=f"Vyber {get('WORDS_TO_SELECT')} slová a vytvor príbeh",
             halign="center",
-            font_style="H5",
             size_hint_y=None,
             height=dp(50)
         )
@@ -115,6 +114,8 @@ class CreateStoryScreen(MDScreen):
                 on_release=self.select_word
             )
 
+            btn._storyfund_selected = False
+
             self.word_box.add_widget(btn)
 
         root.add_widget(self.word_box)
@@ -169,7 +170,7 @@ class CreateStoryScreen(MDScreen):
 
             self.selected.remove(word)
 
-            button.theme_bg_color = "Primary"
+            button._storyfund_selected = False
 
         else:
 
@@ -179,8 +180,7 @@ class CreateStoryScreen(MDScreen):
 
             self.selected.append(word)
 
-            button.theme_bg_color = "Custom"
-            button.md_bg_color = (0, 0.7, 0.2, 1)
+            button._storyfund_selected = True
 
         self.info.text = (
             f"Vybrané: {len(self.selected)} / {get('WORDS_TO_SELECT')}"
