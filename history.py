@@ -1,44 +1,77 @@
 # ======================================
 # StoryFund v0.5
-# app.py
+# history.py
 # ======================================
 
-from kivymd.app import MDApp
-from kivy.uix.screenmanager import ScreenManager
+import os
 
-from history import HistoryScreen
-from settings import SettingsScreen
-from login import LoginScreen
-from home import HomeScreen
-from create_story import CreateStoryScreen
-from profile import ProfileScreen
-from admin import AdminScreen
-from users import UsersScreen
-from user_detail import UserDetailScreen
-from new_user import NewUserScreen
+from kivy.lang import Builder
+from kivymd.uix.screen import MDScreen
+from kivymd.uix.list import (
+    MDListItem,
+    MDListItemHeadlineText,
+    MDListItemSupportingText,
+)
+
+from database import get_archive
 
 
-class StoryFundApp(MDApp):
+class HistoryScreen(MDScreen):
 
-    def build(self):
-        self.title = "StoryFund"
+    def on_pre_enter(self):
+        self.load_history()
 
-        sm = ScreenManager()
+    def load_history(self):
+        self.ids.history_list.clear_widgets()
 
-        sm.add_widget(LoginScreen(name="login"))
-        sm.add_widget(HomeScreen(name="home"))
-        sm.add_widget(CreateStoryScreen(name="create_story"))
-        sm.add_widget(ProfileScreen(name="profile"))
-        sm.add_widget(UsersScreen(name="users"))
-        sm.add_widget(UserDetailScreen(name="user_detail"))
-        sm.add_widget(AdminScreen(name="admin"))
-        sm.add_widget(HistoryScreen(name="history"))
-        sm.add_widget(SettingsScreen(name="settings"))
-        sm.add_widget(NewUserScreen(name="new_user"))
+        archive = get_archive()
+        archive.reverse()
 
-        sm.current = "login"
-        return sm
+        for cycle in archive:
+            fund = cycle.get("fund", 0)
+            people = cycle.get(
+                "people",
+                cycle.get("users", cycle.get("count", 0))
+            )
+
+            try:
+                fund = float(fund)
+            except (TypeError, ValueError):
+                fund = 0
+
+            try:
+                people = int(people)
+            except (TypeError, ValueError):
+                people = 0
+
+            if people > 0:
+                per_person = fund / people
+                per_person_text = f"{per_person:.2f} €"
+            else:
+                per_person_text = "—"
+
+            item = MDListItem(
+                MDListItemHeadlineText(
+                    text="Minulé kolo"
+                ),
+                MDListItemSupportingText(
+                    text=(
+                        f"Vyzbierané: {fund:.2f} €   |   "
+                        f"Ľudí: {people}   |   "
+                        f"Po: {per_person_text}"
+                    )
+                )
+            )
+
+            self.ids.history_list.add_widget(item)
+
+    def back(self):
+        self.manager.current = "admin"
 
 
-if __name__ == "__main__":
-    StoryFundApp().run()
+Builder.load_file(
+    os.path.join(
+        os.path.dirname(__file__),
+        "history.kv"
+    )
+)
