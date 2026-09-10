@@ -95,11 +95,11 @@
             spacing: "10dp"
 
             MDButton:
+                on_release: root.save_settings()
                 MDButtonText:
                     text: "ULOŽIŤ"
-                on_release: root.save_settings()
 
             MDButton:
+                on_release: root.back()
                 MDButtonText:
                     text: "SPÄŤ"
-                on_release: root.back()
