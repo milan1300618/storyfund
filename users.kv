@@ -13,11 +13,10 @@
 
         MDTextField:
             id: search_field
+            on_text: root.filter_users(self.text)
 
             MDTextFieldHintText:
                 text: "Hľadať podľa NIK..."
-
-            on_text: root.filter_users(self.text)
 
         MDLabel:
             id: count_label
@@ -29,5 +28,6 @@
 
         MDButton:
             on_release: root.back()
+
             MDButtonText:
                 text: "Späť do Admin panela"
