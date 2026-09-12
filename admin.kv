@@ -10,41 +10,34 @@
             text: "ADMIN PANEL"
             halign: "center"
             bold: True
-            font_style: "Title"
+            font_style: "H5"
 
-        MDButton:
+        MDRaisedButton:
+            text: "Používatelia"
             on_release: root.show_users()
-            MDButtonText:
-                text: "Používatelia"
 
-        MDButton:
+        MDRaisedButton:
+            text: "➕ Nový používateľ"
             on_release: root.create_user()
-            MDButtonText:
-                text: "➕ Nový používateľ"
 
-        MDButton:
+        MDRaisedButton:
+            text: "Nastavenia"
             on_release: root.settings()
-            MDButtonText:
-                text: "Nastavenia"
 
-        MDButton:
+        MDRaisedButton:
+            text: "Uzavrieť kolo"
             on_release: root.close_cycle()
-            MDButtonText:
-                text: "Uzavrieť kolo"
 
-        MDButton:
+        MDRaisedButton:
+            text: "Minulé kolo"
             on_release: root.previous_cycle()
-            MDButtonText:
-                text: "Minulé kolo"
 
-        MDButton:
+        MDRaisedButton:
+            text: "História"
             on_release: root.history()
-            MDButtonText:
-                text: "História"
 
         Widget:
 
-        MDButton:
+        MDRaisedButton:
+            text: "Odhlásiť"
             on_release: root.logout()
-            MDButtonText:
-                text: "Odhlásiť"

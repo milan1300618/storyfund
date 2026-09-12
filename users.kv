@@ -7,27 +7,23 @@
         spacing: "10dp"
 
         MDLabel:
-            text: "Darcovia"
+            text: "Používatelia"
             halign: "center"
-            font_style: "Title"
+            font_style: "H5"
 
         MDTextField:
             id: search_field
+            hint_text: "Hľadať podľa NIK..."
             on_text: root.filter_users(self.text)
-
-            MDTextFieldHintText:
-                text: "Hľadať podľa NIK..."
 
         MDLabel:
             id: count_label
-            text: "Darcov: 0"
+            text: "Používateľov: 0"
 
         ScrollView:
             MDList:
                 id: users_list
 
-        MDButton:
+        MDRaisedButton:
+            text: "Späť do Admin panela"
             on_release: root.back()
-
-            MDButtonText:
-                text: "Späť do Admin panela"

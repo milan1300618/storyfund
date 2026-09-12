@@ -16,7 +16,6 @@ def check_payment(nick):
     date_from, date_to = _current_week()
 
     headers = {"User-Agent": "Mozilla/5.0"}
-
     params = {
         "accountNumber": ACCOUNT_NUMBER,
         "entityCode": ENTITY_CODE,
@@ -38,23 +37,11 @@ def check_payment(nick):
 
         data = r.json()
 
-        # NIK má tvar SF + 5 číslic.
-        # Do platby sa číslo SF zadáva ako Variabilný symbol.
-        search_number = nick.strip()
-
-        if search_number.upper().startswith("SF"):
-            search_number = search_number[2:]
-
-        search_number = search_number.strip()
-
-        # Kontrolujeme iba Variabilný symbol.
         for t in data.get("iHubResponseInfo", []):
+            text = (t.get("counterParty", "") + " " +
+                    t.get("transactionDetails", ""))
 
-            variable_code = str(
-                t.get("variableCode", "")
-            ).strip()
-
-            if variable_code == search_number:
+            if nick.lower() in text.lower():
                 return True
 
         return False

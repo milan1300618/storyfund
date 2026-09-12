@@ -9,7 +9,7 @@
         MDLabel:
             text: "Nastavenia"
             halign: "center"
-            font_style: "Title"
+            font_style: "H5"
             size_hint_y: None
             height: self.texture_size[1] + dp(20)
 
@@ -34,7 +34,7 @@
                 MDTextField:
                     id: max_stories
                     input_filter: "int"
-                    mode: "outlined"
+                    mode: "rectangle"
 
                 MDLabel:
                     text: "Počet podporených autorov"
@@ -42,7 +42,7 @@
                 MDTextField:
                     id: winners_per_cycle
                     input_filter: "int"
-                    mode: "outlined"
+                    mode: "rectangle"
 
                 MDLabel:
                     text: "Max. generácií"
@@ -50,7 +50,7 @@
                 MDTextField:
                     id: max_generations
                     input_filter: "int"
-                    mode: "outlined"
+                    mode: "rectangle"
 
                 MDLabel:
                     text: "Počet zobrazených slov"
@@ -58,7 +58,7 @@
                 MDTextField:
                     id: words_to_show
                     input_filter: "int"
-                    mode: "outlined"
+                    mode: "rectangle"
 
                 MDLabel:
                     text: "Počet vyberaných slov"
@@ -66,7 +66,7 @@
                 MDTextField:
                     id: words_to_select
                     input_filter: "int"
-                    mode: "outlined"
+                    mode: "rectangle"
 
                 MDLabel:
                     text: "Min. AI skóre"
@@ -74,7 +74,7 @@
                 MDTextField:
                     id: min_ai_score
                     input_filter: "int"
-                    mode: "outlined"
+                    mode: "rectangle"
 
                 MDLabel:
                     text: "Max. AI skóre"
@@ -82,7 +82,7 @@
                 MDTextField:
                     id: max_ai_score
                     input_filter: "int"
-                    mode: "outlined"
+                    mode: "rectangle"
 
                 MDLabel:
                     text: "Zobraziť AI skóre"
@@ -94,12 +94,10 @@
             adaptive_height: True
             spacing: "10dp"
 
-            MDButton:
+            MDRaisedButton:
+                text: "ULOŽIŤ"
                 on_release: root.save_settings()
-                MDButtonText:
-                    text: "ULOŽIŤ"
 
-            MDButton:
+            MDRaisedButton:
+                text: "SPÄŤ"
                 on_release: root.back()
-                MDButtonText:
-                    text: "SPÄŤ"

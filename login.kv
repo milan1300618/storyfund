@@ -15,7 +15,7 @@
         MDLabel:
             text: "StoryFund"
             halign: "center"
-            font_style: "Title"
+            font_style: "H6"
             theme_text_color: "Custom"
             text_color: 1,1,1,1
 
@@ -41,16 +41,12 @@
 
             MDTextField:
                 id: nik
-
-                MDTextFieldHintText:
-                    text: "NIK"
+                hint_text: "NIK"
 
             MDTextField:
                 id: pin
+                hint_text: "PIN"
                 password: True
-
-                MDTextFieldHintText:
-                    text: "PIN"
 
             MDLabel:
                 id: info
@@ -58,11 +54,10 @@
                 halign: "center"
                 theme_text_color: "Error"
 
-            MDButton:
+            MDRaisedButton:
+                text: "PRIHLÁSIŤ SA"
                 pos_hint: {"center_x": .5}
                 on_release: root.login()
-                MDButtonText:
-                    text: "PRIHLÁSIŤ SA"
 
         Widget:
             size_hint_y: .3

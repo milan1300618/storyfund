@@ -6,7 +6,7 @@
 from kivymd.uix.screen import MDScreen
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.label import MDLabel
-from kivymd.uix.button import MDButton, MDButtonText
+from kivymd.uix.button import MDRaisedButton
 from kivy.metrics import dp
 
 from login import get_current_user
@@ -66,10 +66,10 @@ class ProfileScreen(MDScreen):
             if not isinstance(h, dict):
                 continue
 
-            win_list = h.get("winners", [])
+            receivers = h.get("receivers", [])
 
-            if isinstance(win_list, (list, dict)):
-                winners += len(win_list)
+            if isinstance(receivers, list):
+                winners += len(receivers)
 
             try:
                 total += float(h.get("fund", 0) or 0)
@@ -88,8 +88,8 @@ class ProfileScreen(MDScreen):
         txt = f'''[b]MÔJ PROFIL[/b]
 
 Nick: {nik}
-Darca registrovaný: {reg}
-Blokovany pre aktuálne kolo: NIE
+Registrovaný: {reg}
+Dar uhradený pre aktuálne kolo: NIE
 
 Počet mojich príbehov: {len(mine)}
 Priemerné AI skóre: {avg} %
@@ -97,11 +97,11 @@ Najvyššie AI skóre: {best} %
 
 [b]ŠTATISTIKY STORYFUNDU[/b]
 
-Registrovaných darcov: {len(users)}
+Registrovaných používateľov: {len(users)}
 Vytvorených príbehov: {len(stories)}
 Uzavretých kôl: {len(history)}
-Podporenych darcov: {winners}
-Celkovo vyzbierane dary: {total:.2f} €'''
+Vyplatených odmien: {winners}
+Celková vyplatená suma: {total:.2f} €'''
 
         root.add_widget(
             MDLabel(
@@ -111,9 +111,7 @@ Celkovo vyzbierane dary: {total:.2f} €'''
             )
         )
 
-        back = MDButton(
-            MDButtonText(text="SPÄŤ")
-        )
+        back = MDRaisedButton(text="SPÄŤ")
         back.bind(on_release=self.back)
         root.add_widget(back)
 

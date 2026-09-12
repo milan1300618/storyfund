@@ -1,29 +1,27 @@
 [app]
 
 title = StoryFund
-package.name = myapp
-package.domain = storyfund
+package.name = storyfund
+package.domain = org.storyfund
 
 source.dir = .
 source.include_exts = py,kv,png,jpg,jpeg,json,txt
 
-version = 0.1.8
-android.numeric_version = 10254
+version = 0.1
 
-requirements = python3,kivy==2.3.1,kivymd==2.0.0,materialyoucolor==3.0.4,requests,certifi,pay-by-square,segno,liblzma,filetype
+requirements = python3,kivy==2.2.1,kivymd==1.2.0,requests,certifi
 
 orientation = portrait
 fullscreen = 0
 
-android.api = 36
+android.api = 33
 android.minapi = 24
-android.ndk = 28c
+android.ndk = 25b
 android.ndk_api = 24
 android.permissions = INTERNET,ACCESS_NETWORK_STATE
 android.accept_sdk_license = True
-android.release_artifact = aab
 
-p4a.branch = develop
+p4a.branch = v2023.09.16
 
 [buildozer]
 

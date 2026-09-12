@@ -17,8 +17,6 @@ from kivy.clock import Clock
 
 from backend import load_feed
 from login import get_current_user
-from database import get_archive
-from cycle import get_fund
 
 
 TRANSPARENT_ACCOUNT = (
@@ -33,43 +31,9 @@ class HomeScreen(MDScreen):
     def on_enter(self):
         self.build_screen()
 
-
-    def get_summary_data(self):
-        fund = get_fund()
-        archive = get_archive()
-        last_fund = 0.0
-        last_winners = 12
-        last_per_person = 0.0
-
-        if archive:
-            last = archive[-1]
-            last_fund = float(last.get("fund", 0) or 0)
-            participants = last.get("participants", None)
-            if participants is None:
-                participants = last.get("winners", 12)
-            try:
-                last_winners = int(participants)
-            except (TypeError, ValueError):
-                last_winners = 12
-            try:
-                last_per_person = float(last.get("amount_per_person", 0) or 0)
-            except (TypeError, ValueError):
-                last_per_person = 0.0
-            if last_per_person <= 0 and last_winners > 0:
-                last_per_person = last_fund / last_winners
-
-        return {
-            "fund": fund,
-            "donors": int(fund) if fund > 0 else 0,
-            "last_fund": last_fund,
-            "last_winners": last_winners,
-            "last_per_person": last_per_person,
-        }
-
     def build_screen(self):
 
         self.clear_widgets()
-        stats=self.get_summary_data()
 
         root = MDBoxLayout(
             orientation="vertical",
@@ -92,7 +56,7 @@ class HomeScreen(MDScreen):
         root.add_widget(title)
 
         user_label = MDLabel(
-            text=f"Vitaj, {get_current_user()} ",
+            text=f"Vitaj, {get_current_user()} 👋",
             halign="center",
             size_hint_y=None,
             height=dp(30)
@@ -136,7 +100,7 @@ class HomeScreen(MDScreen):
         root.add_widget(buttons)
 
         account_btn = MDRaisedButton(
-            text=" TRANSPARENTNÝ ÚČET",
+            text="TRANSPARENTNÝ ÚČET",
             size_hint=(1, None),
             height=dp(42)
         )
@@ -186,7 +150,7 @@ class HomeScreen(MDScreen):
                 )
 
                 author = MDLabel(
-                    text=f"👤 {s['nik']}",
+                    text=f" {s['nik']}",
                     bold=True,
                     size_hint_y=None,
                     adaptive_height=True
@@ -232,47 +196,10 @@ class HomeScreen(MDScreen):
         # Súhrn posledného kola (pevný spodný panel)
         # =====================================
 
-        summary = MDCard(
-            orientation="vertical",
-            size_hint_y=None,
-            height=dp(175),
-            padding=dp(12),
-            spacing=dp(5),
-            radius=[12],
-            md_bg_color=(0.15, 0.35, 0.75, 1)
-        )
-
-        summary.add_widget(
-            MDLabel(
-                text="📊 PREHĽAD STORYFUNDU",
-                font_style="H6",
-                halign="center",
-                size_hint_y=None,
-                height=dp(22)
-            )
-        )
-
-        summary.add_widget(
-            MDLabel(
-                text=f"Fond aktuálneho kola: {stats['fund']:.2f} €\nPočet darcov: {stats['donors']}",
-                halign="center",
-                size_hint_y=None,
-                height=dp(38)
-            )
-        )
-
-        summary.add_widget(
-            MDLabel(
-                text=(
-                    f" MINULÉ KOLO\n"
-                    f" Rozdelené medzi: {stats['last_winners']} ľudí\n"
-                    f" Vyzbierané a rozdelené: {stats['last_fund']:.2f} €\n"
-                    f" Na jedného: {stats['last_per_person']:.2f} €"
-                ),
-                halign="center",
-                size_hint_y=None,
-                height=dp(82)
-            )
+        summary = MDRaisedButton(
+            text=" MINULOTÝŽDŇOVÁ ZBIERKA\nVyzbierané: 245,60 €\n👥 Odmenených autorov: 12   📅 13.07.2026",
+            size_hint=(1, None),
+            height=dp(88)
         )
 
         root.add_widget(summary)

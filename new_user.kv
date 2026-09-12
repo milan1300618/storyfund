@@ -7,9 +7,9 @@
         spacing: "12dp"
 
         MDLabel:
-            text: "Nový darca"
+            text: "Nový používateľ"
             halign: "center"
-            font_style: "Title"
+            font_style: "H5"
 
         MDLabel:
             text: "NIK"
@@ -27,17 +27,14 @@
 
         Widget:
 
-        MDButton:
+        MDRaisedButton:
+            text: "Generovať znova"
             on_release: root.generate_new()
-            MDButtonText:
-                text: "Generovať znova"
 
-        MDButton:
+        MDRaisedButton:
+            text: "Vytvoriť používateľa"
             on_release: root.save_user()
-            MDButtonText:
-                text: "Vytvoriť darcu"
 
-        MDButton:
+        MDRaisedButton:
+            text: "Zrušiť"
             on_release: root.cancel()
-            MDButtonText:
-                text: "Zrušiť"

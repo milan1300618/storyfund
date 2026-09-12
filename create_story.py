@@ -9,7 +9,7 @@ from kivymd.uix.screen import MDScreen
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.gridlayout import MDGridLayout
 from kivymd.uix.label import MDLabel
-from kivymd.uix.button import MDButton, MDButtonText
+from kivymd.uix.button import MDRaisedButton
 
 from kivy.metrics import dp
 
@@ -57,6 +57,7 @@ class CreateStoryScreen(MDScreen):
         title = MDLabel(
             text=f"Vyber {get('WORDS_TO_SELECT')} slová a vytvor príbeh",
             halign="center",
+            font_style="H5",
             size_hint_y=None,
             height=dp(50)
         )
@@ -72,8 +73,8 @@ class CreateStoryScreen(MDScreen):
 
             root.add_widget(info)
 
-            back = MDButton(
-                MDButtonText(text="SPÄŤ")
+            back = MDRaisedButton(
+                text="SPÄŤ"
             )
 
             back.bind(
@@ -104,8 +105,8 @@ class CreateStoryScreen(MDScreen):
 
         for word in self.words:
 
-            btn = MDButton(
-                MDButtonText(text=word),
+            btn = MDRaisedButton(
+                text=word,
                 size_hint=(1, None),
                 height=dp(34)
             )
@@ -118,8 +119,8 @@ class CreateStoryScreen(MDScreen):
 
         root.add_widget(self.word_box)
 
-        self.generate_btn = MDButton(
-            MDButtonText(text="GENEROVAŤ PRÍBEH"),
+        self.generate_btn = MDRaisedButton(
+            text="GENEROVAŤ PRÍBEH",
             disabled=True
         )
 
@@ -136,8 +137,8 @@ class CreateStoryScreen(MDScreen):
 
         root.add_widget(self.story_label)
 
-        self.save_btn = MDButton(
-            MDButtonText(text="ULOŽIŤ"),
+        self.save_btn = MDRaisedButton(
+            text="ULOŽIŤ",
             disabled=True
         )
 
@@ -147,8 +148,8 @@ class CreateStoryScreen(MDScreen):
 
         root.add_widget(self.save_btn)
 
-        back = MDButton(
-            MDButtonText(text="SPÄŤ")
+        back = MDRaisedButton(
+            text="SPÄŤ"
         )
 
         back.bind(
@@ -162,13 +163,13 @@ class CreateStoryScreen(MDScreen):
 
     def select_word(self, button):
 
-        word = button.children[0].text
+        word = button.text
 
         if word in self.selected:
 
             self.selected.remove(word)
 
-            button.theme_bg_color = "Primary"
+            button.md_bg_color = self.theme_cls.primary_color
 
         else:
 
@@ -178,7 +179,6 @@ class CreateStoryScreen(MDScreen):
 
             self.selected.append(word)
 
-            button.theme_bg_color = "Custom"
             button.md_bg_color = (0, 0.7, 0.2, 1)
 
         self.info.text = (
@@ -234,11 +234,9 @@ class CreateStoryScreen(MDScreen):
                 - self.attempts
             )
 
-            self.generate_btn.children[0].text = (
+            self.generate_btn.text = (
                 f"GENEROVAŤ ZNOVA ({zostava})"
             )
-
-
     def save(self, button):
 
         nik = get_current_user()
@@ -260,14 +258,10 @@ class CreateStoryScreen(MDScreen):
             return
 
         if not get("TEST_MODE"):
-
             if not check_payment(nik):
-
                 self.story_label.text = (
-                    "Neregistruje sa dar (2€) na účte s týmto nickom za "
-                    "aktuálne kolo."
+                    "Nebola nájdená platba s týmto nickom za aktuálne kolo."
                 )
-
                 return
 
         save_story(
@@ -278,6 +272,7 @@ class CreateStoryScreen(MDScreen):
         )
 
         text = " Príbeh bol uložený."
+
 
         self.story_label.text = text
 

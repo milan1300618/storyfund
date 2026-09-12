@@ -1,19 +1,11 @@
-# ======================================
-# StoryFund v0.5
-# history.py
-# ======================================
-
 import os
-
 from kivy.lang import Builder
 from kivymd.uix.screen import MDScreen
-from kivymd.uix.list import (
-    MDListItem,
-    MDListItemHeadlineText,
-    MDListItemSupportingText,
-)
+from kivymd.uix.list import TwoLineListItem
 
 from database import get_archive
+
+Builder.load_file(os.path.join(os.path.dirname(__file__), "history.kv"))
 
 
 class HistoryScreen(MDScreen):
@@ -25,14 +17,13 @@ class HistoryScreen(MDScreen):
         self.ids.history_list.clear_widgets()
 
         archive = get_archive()
+
         archive.reverse()
 
         for cycle in archive:
+
             fund = cycle.get("fund", 0)
-            people = cycle.get(
-                "people",
-                cycle.get("users", cycle.get("count", 0))
-            )
+            people = cycle.get("people", cycle.get("users", cycle.get("count", 0)))
 
             try:
                 fund = float(fund)
@@ -50,16 +41,12 @@ class HistoryScreen(MDScreen):
             else:
                 per_person_text = "—"
 
-            item = MDListItem(
-                MDListItemHeadlineText(
-                    text="Minulé kolo"
-                ),
-                MDListItemSupportingText(
-                    text=(
-                        f"Vyzbierané: {fund:.2f} €   |   "
-                        f"Ľudí: {people}   |   "
-                        f"Po: {per_person_text}"
-                    )
+            item = TwoLineListItem(
+                text="Minulé kolo",
+                secondary_text=(
+                    f"Vyzbierané: {fund:.2f} €   |   "
+                    f"Ľudí: {people}   |   "
+                    f"Po: {per_person_text}"
                 )
             )
 
@@ -67,11 +54,3 @@ class HistoryScreen(MDScreen):
 
     def back(self):
         self.manager.current = "admin"
-
-
-Builder.load_file(
-    os.path.join(
-        os.path.dirname(__file__),
-        "history.kv"
-    )
-)

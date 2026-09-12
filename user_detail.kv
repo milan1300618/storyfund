@@ -7,9 +7,9 @@
         spacing: "10dp"
 
         MDLabel:
-            text: "Darca"
+            text: "PouÅ¾Ã­vateÄ¾"
             halign: "center"
-            font_style: "Title"
+            font_style: "H5"
 
         MDLabel:
             id: nik_label
@@ -29,19 +29,16 @@
 
         Widget:
 
-        MDButton:
+        MDRaisedButton:
             id: block_btn
+            text: "ðŸš« BlokovaÅ¥"
             on_release: root.block_user()
-            MDButtonText:
-                text: "ðŸš« BlokovanÃ½"
 
-        MDButton:
+        MDRaisedButton:
             id: unblock_btn
+            text: "ðŸ”“ OdblokovaÅ¥"
             on_release: root.unblock_user()
-            MDButtonText:
-                text: "ðŸ”“ OdblokovanÃ½"
 
-        MDButton:
+        MDRaisedButton:
+            text: "â¬… SpÃ¤Å¥"
             on_release: root.back()
-            MDButtonText:
-                text: "â¬… SpÃ¤Å¥"

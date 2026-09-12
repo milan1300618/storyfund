@@ -32,7 +32,7 @@ class StoryFundApp(MDApp):
         sm.add_widget(UsersScreen(name="users"))
         sm.add_widget(UserDetailScreen(name="user_detail"))
         sm.add_widget(AdminScreen(name="admin"))
-        sm.add_widget(HistoryScreen(name="history"))
+        sm.add_widget(HistoryScreen())
         sm.add_widget(SettingsScreen(name="settings"))
         sm.add_widget(NewUserScreen(name="new_user"))
 
